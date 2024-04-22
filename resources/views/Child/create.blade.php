@@ -13,7 +13,13 @@
     .container {
         margin-top: 50px;
     }
-</style>    
+</style>
+<div class="container">
+    @if(session('success'))
+    <div class="alert alert-success" role="alert">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -21,18 +27,21 @@
                 <div class="card-header">Create New Child</div>
 
                 <div class="card-body">
-                    <form method="POST" action="" enctype="multipart/form-data">
+                    <form method="POST" action="{{route('child.store')}}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group">
                             <label for="parent_id">Parent Name:</label>
                             <select class="form-control" id="parent_id" name="parent_id" required>
-                                {{-- @foreach ($parents as $parent)
-                                    <option value="{{ $parent->id }}">{{ $parent->name }}</option>
-                                @endforeach --}}
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                @endforeach
                             </select>
                         </div>
-
+                        <div class="form-group">
+                            <label for="name">Child Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
                         <div class="form-group">
                             <label for="dob">Date of Birth:</label>
                             <input type="date" class="form-control" id="dob" name="dob" required>

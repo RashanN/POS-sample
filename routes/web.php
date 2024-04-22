@@ -66,3 +66,6 @@ Route::resource('child', ChildController::class);
 Route::get('/invoice/generate/{played_time}', [InvoiceController::class,'generate'])->name('invoice.generate');
 Route::get('/invoice/generate/{played_time}', [InvoiceController::class, 'generate'])->name('invoice.generate');
 Route::get('get-product-details', [InvoiceController::class, 'getProductDetails'])->name('get-product-details');
+
+
+Route::resource('child', ChildController::class);

@@ -157,11 +157,25 @@ row.innerHTML = `
                 <td class="font_color row_padding">${productsData.name}</td>
                 <td class="font_color row_padding" contenteditable="true">${productsData.unitprice}</td>
                 <td  class="font_color row_padding">${data.quantity}</td>
-                <td class="font_color row_padding">${productsData.unitprice * data.quantity}</td>
+                <td id="tot" class="font_color row_padding">${productsData.unitprice * data.quantity}</td>
                 <td class="font_color row_padding"><button onclick="deleteRow(this)">Delete</button></td>
             `;
-            var unitPriceCell = row.querySelector('.unitprice');
-    unitPriceCell.textContent = productsData.unitprice;
+            var tot=0;
+
+            document.querySelectorAll('#productTableBody tr').forEach(function(row) {
+
+                var totalPriceCellContent = row.querySelector('#tot').textContent;
+                console.log(totalPriceCellContent);
+            tot += parseFloat(totalPriceCell.textContent);
+            });
+
+            console.log('Total:', tot);
+    var totalRow = tableBody.insertRow();
+            totalRow.innerHTML = `
+            <td style="background-color: #F5F5F5;"></td>
+
+        `;
+
 }
         function deleteRow(button) {
             var row = button.parentNode.parentNode; // Get the parent row of the button

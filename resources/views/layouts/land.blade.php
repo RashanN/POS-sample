@@ -87,12 +87,7 @@
 
 
                     <li class="nav-item">
-                        {{-- @if(Auth::check())
-                        @if (Auth::user()->getRoleNames()[0] == "Admin")
-                            <a class="nav-link" href="">AdminPanel</a>
-
-                            @endif
-                        @endif --}}
+                        
 
 
                     </li>
