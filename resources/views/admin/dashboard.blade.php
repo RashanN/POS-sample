@@ -10,11 +10,11 @@
         var hamburger = document.querySelector(".hamburger");
         var wrapper  = document.querySelector(".wrapper");
         var backdrop = document.querySelector(".backdrop");
-    
+
         hamburger.addEventListener("click", function(){
             wrapper.classList.add("active");
         })
-    
+
         backdrop.addEventListener("click", function(){
             wrapper.classList.remove("active");
         })
@@ -25,7 +25,7 @@
     <title>Document</title>
 </head>
 <body>
-    
+
     <div class="wrapper">
 		<div class="wrapper_inner">
 			<div class="vertical_wrap">
@@ -49,7 +49,7 @@
 						<span class="icon"><i class="fas fa-home"></i></span>
 						<span class="text">Product Category</span>
 					</a></li>
-					<li><a href="">
+					<li><a href="{{ route('invoice.create') }}">
 						<span class="icon"><i class="fas fa-chart-pie"></i></span>
 						<span class="text">Invoice</span>
 					</a></li>

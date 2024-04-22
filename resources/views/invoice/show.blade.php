@@ -8,11 +8,13 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{asset('css/invoiceshow.css')}}">
     <!-- Custom CSS -->
     <style>
         /* Additional custom styles */
         .container {
             margin-top: 50px;
+
         }
     </style>
 
@@ -30,7 +32,7 @@
                             <input type="text" name="played_time_total" value="{{ $amount }}.00" class="form-control" style="font-weight: 700" autofocus>
                         </div>
                     </div>
-                    
+
 
                     <!-- Bought Products Table (Assuming some sample data) -->
                     <h3>Bought Products</h3>
@@ -38,7 +40,7 @@
                         @csrf
                         <div class="form-row align-items-center">
                             <div class="col-md-4">
-                                <select id="product" class="form-control" name="product" required>
+                                <select id="product" class="form-control" name="product" required onchange="focusQuantity()">
                                     <option value="">Select Product</option>
                                     @foreach($products as $product)
                                     <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -53,7 +55,7 @@
                             </div>
                         </div>
                     </form>
-                    
+
                     <table class="producttable">
                         <!-- Table header -->
                         <thead>
@@ -62,6 +64,7 @@
                                 <th>Unit Price</th>
                                 <th>Quantity</th>
                                 <th>Total Price</th>
+                                <th>Action </th>
                             </tr>
                         </thead>
                         <!-- Table body (sample data) -->
@@ -71,41 +74,110 @@
                             </tr>
                         </tbody>
                     </table>
-                    
+                    <div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Amount</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="amount"  class="form-control" >
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Discount</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="discount"  class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Fine Payment</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="finePayment"  class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Total</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="total"  class="form-control">
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                     <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            document.getElementById('addProductBtn').addEventListener('click', function (event) {
-                                event.preventDefault(); // Prevent default form submission
-                                
-                                var productId = document.getElementById('product').value;
-                                console.log(productId);
-                                var quantity = document.getElementsByName('quantity')[0].value;
-                                console.log(quantity);
-                                if (productId && quantity > 0) {
-                                    // Fetch product details asynchronously
-                                    var url = '/get-product-details/' + productId;
-                                    console.log(url);
-                                    fetch('/get-product-details/' + productId)
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            // Update product table with selected product details
-                                            var productTableBody = document.getElementById('productTableBody');
-                                            var newRow = productTableBody.insertRow();
-                                            var productNameCell = newRow.insertCell(0);
-                                            var unitPriceCell = newRow.insertCell(1);
-                                            var quantityCell = newRow.insertCell(2);
-                                            var totalPriceCell = newRow.insertCell(3);
-                                            
-                                            productNameCell.textContent = data.product_name;
-                                            unitPriceCell.textContent = data.unit_price;
-                                            quantityCell.textContent = quantity;
-                                            totalPriceCell.textContent = parseFloat(data.unit_price) * parseInt(quantity);
-                                        })
-                                        .catch(error => {
-                                            console.error('Error:', error);
-                                        });
-                                }
-                            });
-                        });
+
+                function focusQuantity() {
+                     document.getElementsByName('quantity')[0].focus();
+                }
+            document.getElementById('addProductBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+
+            var productId = document.getElementById('product').value;
+             console.log(productId);
+              var quantity = document.getElementsByName('quantity')[0].value;
+    console.log(quantity);
+            $.ajax({
+                url: '{{ route('get-product-details') }}',
+                method: 'GET',
+                data: {
+                    productId: productId,
+                    quantity: quantity
+                },
+                beforeSend: function () {
+                    // Show loader if needed
+                },
+                success: function (data) {
+                    console.log(data);
+                    updateTable(data);
+                },
+                error: function (error) {
+                    console.log('Error fetching data:', error);
+                },
+                complete: function () {
+                    // Hide loader if needed
+                }
+            });
+        });
+
+        function updateTable(data) {
+
+var productsData = data.products;
+
+console.log(productsData);
+
+var tableBody = document.getElementById('productTableBody');
+// tableBody.innerHTML = '';
+
+var row = tableBody.insertRow();
+
+row.innerHTML = `
+                <td class="font_color row_padding">${productsData.name}</td>
+                <td class="font_color row_padding" contenteditable="true">${productsData.unitprice}</td>
+                <td  class="font_color row_padding">${data.quantity}</td>
+                <td class="font_color row_padding">${productsData.unitprice * data.quantity}</td>
+                <td class="font_color row_padding"><button onclick="deleteRow(this)">Delete</button></td>
+            `;
+            var unitPriceCell = row.querySelector('.unitprice');
+    unitPriceCell.textContent = productsData.unitprice;
+}
+        function deleteRow(button) {
+            var row = button.parentNode.parentNode; // Get the parent row of the button
+            row.parentNode.removeChild(row); // Remove the row from the table
+        }
+
+        function updateAmount() {
+                var playedTimeTotalValue = document.getElementsByName('played_time_total')[0].value;
+
+                document.getElementsByName('amount')[0].value = playedTimeTotalValue;
+            }
+            updateAmount();
+            document.getElementsByName('played_time_total')[0].addEventListener('input', function() {
+                updateAmount(); // Update the amount input field when played_time_total changes
+            });
+
+
                     </script>
 @endsection

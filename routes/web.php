@@ -26,7 +26,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard'); 
+    return view('admin.dashboard');
 })->name('admin.dashboard');
 
 Route::get('/dashboard', function () {
@@ -65,3 +65,4 @@ Route::resource('playtimeprices', PlaytimespriceController::class);
 Route::resource('child', ChildController::class);
 Route::get('/invoice/generate/{played_time}', [InvoiceController::class,'generate'])->name('invoice.generate');
 Route::get('/invoice/generate/{played_time}', [InvoiceController::class, 'generate'])->name('invoice.generate');
+Route::get('get-product-details', [InvoiceController::class, 'getProductDetails'])->name('get-product-details');

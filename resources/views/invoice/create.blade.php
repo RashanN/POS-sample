@@ -8,7 +8,7 @@
 <!-- Bootstrap CSS -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    
+
 <!-- Custom CSS -->
 <style>
     /* Additional custom styles */
@@ -17,7 +17,7 @@
     }
 </style>
 
-    
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -68,7 +68,7 @@
                                                 <th>Start Time</th>
                                                 <th>End Time</th>
                                                 <th>Played Time </th>
-                                               
+
                                             </tr>
                                         </thead>
                                         <!-- Table body (data should come from controller) -->
@@ -78,7 +78,7 @@
                                                 <td id="start-time">-</td>
                                                 <td id="end-time">-</td>
                                                 <td id="played-time">-</td>
-                                               
+
 
 
                                             </tr>
@@ -88,54 +88,8 @@
                                 </div>
                             </div>
                         </form>
-                        
-                        <form action="">
-                            <!-- Bought Products Table (Assuming some sample data) -->
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <h3>Bought Products</h3>
-                                    <table class="table">
-                                        <!-- Table header -->
-                                        <thead>
-                                            <tr>
-                                                <th>Product Name</th>
-                                                <th>Unit Price</th>
-                                                <th>Quantity</th>
-                                                <th>Total Price</th>
-                                            </tr>
-                                        </thead>
-                                        <!-- Table body (sample data) -->
-                                        <tbody>
-                                            
-                                                <tr>
-                                                    <td>
-                                                        <select id="product_id" class="form-control" name="product_id" required>
-                                                                <option value="">Select Product</option>
-                                                                @foreach ($products as $product)
-                                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div></td>
-                                                    {{-- <td>{{ $product->unit_price }}</td>
-                                                    <td>{{ $product->quantity }}</td>
-                                                    <td>{{ $product->total_price }}</td> --}}
-                                                </tr>
-                                           
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
 
-                            <!-- Submit Button -->
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        Create Invoice
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+
                     </div>
                 </div>
             </div>
@@ -192,7 +146,7 @@
     //     });
     // });
 
-  
+
         document.addEventListener('DOMContentLoaded', function () {
             var generateButton = document.querySelector('.generate-btn');
             generateButton.addEventListener('click', function (event) {
@@ -204,14 +158,14 @@
                 // Construct the URL with the played_time parameter
                 var url = "{{ route('invoice.generate', ['played_time' => ':playedTime']) }}";
                 url = url.replace(':playedTime', playedTime);
-
+                console.log(url);
                 // Redirect to the generated URL
                 window.location.href = url;
             });
         });
-   
+
     /////////////////
- 
+
     </script>
-    
+
 @endsection
