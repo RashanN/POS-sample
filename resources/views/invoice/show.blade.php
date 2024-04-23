@@ -24,6 +24,10 @@
             <div class="card">
                 <div class="card-header">Invoice Details</div>
                 <div class="card-body">
+                    <script>
+                        // Define JavaScript variables to store the products and amount
+
+                    </script>
                     <div class="row">
                         <div class="col-md-6">
                             <h4>Played Time Total:</h4>
@@ -143,46 +147,48 @@
         });
 
         function updateTable(data) {
+    var productsData = data.products;
+    console.log(productsData);
 
-var productsData = data.products;
+    var tableBody = document.getElementById('productTableBody');
+    var row = tableBody.insertRow();
 
-console.log(productsData);
+    row.innerHTML = `
+        <td class="font_color row_padding">${productsData.name}</td>
+        <td class="font_color row_padding" contenteditable="true">${productsData.unitprice}</td>
+        <td class="font_color row_padding">${data.quantity}</td>
+        <td id="tot" class="font_color row_padding">${productsData.unitprice * data.quantity}</td>
+        <td class="font_color row_padding"><button onclick="deleteRow(this)">Delete</button></td>
+    `;
 
-var tableBody = document.getElementById('productTableBody');
-// tableBody.innerHTML = '';
+    var tot = 0;
 
-var row = tableBody.insertRow();
+    document.querySelectorAll('#productTableBody tr').forEach(function(row) {
+        var totalPriceCell = row.querySelector('#tot');
+        if (totalPriceCell) {
+            var totalPriceCellContent = totalPriceCell.textContent;
+            console.log(totalPriceCellContent);
+            tot += parseFloat(totalPriceCellContent);
+        }
+    });
 
-row.innerHTML = `
-                <td class="font_color row_padding">${productsData.name}</td>
-                <td class="font_color row_padding" contenteditable="true">${productsData.unitprice}</td>
-                <td  class="font_color row_padding">${data.quantity}</td>
-                <td id="tot" class="font_color row_padding">${productsData.unitprice * data.quantity}</td>
-                <td class="font_color row_padding"><button onclick="deleteRow(this)">Delete</button></td>
-            `;
-            var tot=0;
+    console.log('Total:', tot);
 
-            document.querySelectorAll('#productTableBody tr').forEach(function(row) {
-
-                var totalPriceCellContent = row.querySelector('#tot').textContent;
-                console.log(totalPriceCellContent);
-            tot += parseFloat(totalPriceCell.textContent);
-            });
-
-            console.log('Total:', tot);
     var totalRow = tableBody.insertRow();
-            totalRow.innerHTML = `
-            <td style="background-color: #F5F5F5;"></td>
+    totalRow.innerHTML = `
+        <td hidden>Total:</td>
+        <td id="sum" colspan="3" ">${tot}</td>
 
-        `;
-
+    `;
 }
+
         function deleteRow(button) {
             var row = button.parentNode.parentNode; // Get the parent row of the button
             row.parentNode.removeChild(row); // Remove the row from the table
         }
 
-        function updateAmount() {
+        function updateAmount(tot) {
+                
                 var playedTimeTotalValue = document.getElementsByName('played_time_total')[0].value;
 
                 document.getElementsByName('amount')[0].value = playedTimeTotalValue;

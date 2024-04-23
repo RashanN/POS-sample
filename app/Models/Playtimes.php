@@ -11,7 +11,7 @@ class Playtimes extends Model
     use HasFactory;
     use HasFactory;
 
-    protected $fillable = ['intime', 'outtime', 'date', 'customer_id'];
+    protected $fillable = ['intime',  'date', 'customer_id'];
 
     public function customer()
     {

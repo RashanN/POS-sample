@@ -45,10 +45,9 @@ class ChildController extends Controller
     }
     public function index()
     {
-        // Retrieve all children
-        $children = Child::all();
-        //dd($children);
-        // Pass children data to the view
+          $children = Child::with('customer')->get();
+            dd($children);
+        // Pass the children data to the index view
         return view('child.index', compact('children'));
     }
     public function show()

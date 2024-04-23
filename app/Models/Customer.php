@@ -22,4 +22,8 @@ class Customer extends Model
     {
         return $this->hasMany(Playtimes::class);
     }
+    public function children()
+    {
+        return $this->hasMany(Child::class);
+    }
 }

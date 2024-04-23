@@ -15,13 +15,12 @@ return new class extends Migration
         Schema::create('playtimes', function (Blueprint $table) {
             $table->id();
             $table->time('intime');
-            $table->time('outtime');
             $table->date('date');
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
             $table->timestamps();
         });
-        
+
 
     }
 

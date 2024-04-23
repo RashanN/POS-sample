@@ -63,9 +63,7 @@ Route::resource('product_category',ProductCategoryController::class);
 Route::resource('invoice',InvoiceController::class);
 Route::resource('playtimeprices', PlaytimespriceController::class);
 Route::resource('child', ChildController::class);
-Route::get('/invoice/generate/{played_time}', [InvoiceController::class,'generate'])->name('invoice.generate');
-Route::get('/invoice/generate/{played_time}', [InvoiceController::class, 'generate'])->name('invoice.generate');
+Route::get('/invoice/generate/{playedTime}/{customerId}/{inTime}', [InvoiceController::class,'generate'])->name('invoice.generate');
 Route::get('get-product-details', [InvoiceController::class, 'getProductDetails'])->name('get-product-details');
-
 
 Route::resource('child', ChildController::class);

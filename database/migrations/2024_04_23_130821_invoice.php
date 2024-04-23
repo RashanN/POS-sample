@@ -17,13 +17,13 @@ return new class extends Migration
             $table->date('date');
             $table->decimal('amount', 10, 2);
             $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('playtimes_id');
+            $table->unsignedBigInteger('playtimeorder_id');
             $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
-            $table->foreign('playtimes_id')->references('id')->on('playtimes')->onDelete('cascade');
+            $table->foreign('playtimeorder_id')->references('id')->on('playtimeorder')->onDelete('cascade');
             $table->timestamps();
 
         });
-        
+
     }
 
     /**

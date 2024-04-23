@@ -1,6 +1,19 @@
 @extends('layouts.land')
 
 @section('content')
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>All Products</title>
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- Custom CSS -->
+<style>
+    /* Additional custom styles */
+    .container {
+        margin-top: 50px;
+    }
+</style>
     <div class="container">
         <h1>All Children</h1>
         @if(session('success'))
@@ -22,7 +35,7 @@
                 @foreach ($children as $child)
                     <tr>
                         <td>{{ $child->id }}</td>
-                        <td></td>
+                        <td>{{ $child->customer->name }}</td>
                         <td>{{ $child->name }}</td>
                         <td>{{ $child->DOB }}</td>
                         <td>

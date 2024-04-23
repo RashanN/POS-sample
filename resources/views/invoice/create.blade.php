@@ -29,7 +29,7 @@
 
                             <!-- Customer ID -->
                             <div class="form-group row">
-                                <label for="customer_id" class="col-md-4 col-form-label text-md-right">Customer</label>
+                                <label for="" class="col-md-4 col-form-label text-md-right">Customer</label>
                                 <div class="col-md-6">
                                     <select id="customer_id" class="form-control" name="customer_id" required>
                                         <option value="">Select Customer</option>
@@ -47,6 +47,8 @@
                                     <input id="intime" type="time" class="form-control" name="intime" required>
                                 </div>
                             </div>
+
+
 
                             <!-- Out Time -->
                             <div class="form-group row">
@@ -130,39 +132,27 @@
             document.getElementById('played-time').innerText = '-';
         }
     }
-    ///////////////////
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     var generateButtons = document.querySelectorAll('.generate-btn');
-    //     generateButtons.forEach(function(button) {
-    //         button.addEventListener('click', function(event) {
-    //             // Log a message to verify that the button click event is being captured
-    //             var playedTime = this.parentElement.previousElementSibling.innerText;
-
-    //             // Update the href attribute of the link with the calculated played time
-    //             this.href = this.href.split('?')[0] + '?played_time=' + encodeURIComponent(playedTime);
-
-    //             console.log('Button clicked');
-    //         });
-    //     });
-    // });
 
 
-        document.addEventListener('DOMContentLoaded', function () {
-            var generateButton = document.querySelector('.generate-btn');
-            generateButton.addEventListener('click', function (event) {
-                event.preventDefault(); // Prevent default link behavior
 
-                // Get the value of played-time
-                var playedTime = document.getElementById('played-time').innerText.trim();
 
-                // Construct the URL with the played_time parameter
-                var url = "{{ route('invoice.generate', ['played_time' => ':playedTime']) }}";
-                url = url.replace(':playedTime', playedTime);
-                console.log(url);
-                // Redirect to the generated URL
-                window.location.href = url;
-            });
-        });
+    document.addEventListener('DOMContentLoaded', function () {
+    var generateBtn = document.querySelector('.generate-btn');
+    generateBtn.addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the default action of the anchor tag
+
+        const customerId = document.getElementById('customer_id').value;
+        const inTime = document.getElementById('intime').value;
+        var playedTime = document.getElementById('played-time').innerText.trim();
+
+        console.log(customerId);
+        console.log(inTime);
+        console.log(playedTime);
+
+        var routeUrl = "{{ url('/invoice/generate/') }}" + '/' + playedTime  + '/' + customerId + '/' + inTime;
+        window.location.href = routeUrl;
+    });
+});
 
     /////////////////
 
