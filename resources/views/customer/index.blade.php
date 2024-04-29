@@ -32,7 +32,6 @@
                         <th>Name</th>
                         <th>Contact Number</th>
                         <th>Email</th>
-                        <th>Address</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -42,7 +41,6 @@
                             <td>{{ $customer->name }}</td>
                             <td>{{ $customer->contact }}</td>
                             <td>{{ $customer->email }}</td>
-                            <td>{{ $customer->address }}</td>
                             <td>
                                 <a href="{{ route('customer.edit', $customer->id) }}" class="btn btn-primary">Edit</a>
                                 <form action="{{ route('customer.destroy', $customer->id) }}" method="POST" style="display: inline;">

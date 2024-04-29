@@ -84,25 +84,25 @@
                             <h4>Amount</h4>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="amount"  class="form-control" >
+                            <input type="text" name="amount"  class="form-control input-with-border" >
                         </div>
                         <div class="col-md-6">
                             <h4>Discount</h4>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="discount"  class="form-control">
+                            <input type="text" name="discount"  class="form-control input-with-border" id="discountInput">
                         </div>
                         <div class="col-md-6">
                             <h4>Fine Payment</h4>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="finePayment"  class="form-control">
+                            <input type="text" name="finePayment"  class="form-control input-with-border" id="finetInput">
                         </div>
                         <div class="col-md-6">
                             <h4>Total</h4>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="total"  class="form-control">
+                            <input type="text" name="total"  class="form-control input-with-border">
                         </div>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
         </div>
     </div>
 </div>
-                    <script>
+      <script>
 
                 function focusQuantity() {
                      document.getElementsByName('quantity')[0].focus();
@@ -173,31 +173,54 @@
     });
 
     console.log('Total:', tot);
-
+    updateAmount(tot);
     var totalRow = tableBody.insertRow();
     totalRow.innerHTML = `
         <td hidden>Total:</td>
-        <td id="sum" colspan="3" ">${tot}</td>
+        <td id="sum" colspan="3" " hidden>${tot}</td>
 
     `;
+
 }
 
         function deleteRow(button) {
             var row = button.parentNode.parentNode; // Get the parent row of the button
             row.parentNode.removeChild(row); // Remove the row from the table
+            updateAmount();
         }
 
         function updateAmount(tot) {
-                
-                var playedTimeTotalValue = document.getElementsByName('played_time_total')[0].value;
 
-                document.getElementsByName('amount')[0].value = playedTimeTotalValue;
+                var playedTimeTotalValue = document.getElementsByName('played_time_total')[0].value;
+                document.getElementsByName('amount')[0].value=parseFloat(playedTimeTotalValue);
+
+                    var tot = 0;
+                    document.querySelectorAll('#productTableBody tr').forEach(function(row) {
+                    var totalPriceCell = row.querySelector('#tot');
+                    if (totalPriceCell) {
+                            var totalPriceCellContent = totalPriceCell.textContent;
+                            tot += parseFloat(totalPriceCellContent);
+                    }
+                    var amount = parseFloat(playedTimeTotalValue) + tot;
+                    amount = amount.toFixed(2);
+                    document.getElementsByName('amount')[0].value = amount;
+    });
+                    // if (typeof tot === 'undefined') {
+                    //        document.getElementsByName('amount')[0].value=parseFloat(playedTimeTotalValue);
+                    //     } else {
+                    //         var totFormatted = tot.toFixed(2);
+                    //         console.log('totFormatted:', totFormatted);
+                    //         amount = parseFloat(playedTimeTotalValue) + parseFloat(totFormatted);
+                    //         document.getElementsByName('amount')[0].value =amount;
+                    //     }
+
+
             }
             updateAmount();
             document.getElementsByName('played_time_total')[0].addEventListener('input', function() {
                 updateAmount(); // Update the amount input field when played_time_total changes
             });
 
-
-                    </script>
+            
+    </script>
 @endsection

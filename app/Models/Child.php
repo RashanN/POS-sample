@@ -13,6 +13,8 @@ class Child extends Model
         'customer_id',
         'dob',
         'name',
+        'gender',
+        
     ];
     public function customer()
 {

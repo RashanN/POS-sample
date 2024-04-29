@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create('playtimeorder', function (Blueprint $table) {
+        Schema::create('outtime', function (Blueprint $table) {
             $table->id();
+            $table->string('RFID')->unique();
             $table->time('outtime');
-            $table->decimal('amount', 10, 2);
-            $table->unsignedBigInteger('playtimes_id');
-            $table->foreign('playtimes_id')->references('id')->on('playtimes')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
@@ -27,7 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
-        Schema::dropIfExists('playtimeorder');
+        Schema::dropIfExists('outtime');
     }
 };

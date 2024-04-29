@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->date('DOB');
             $table->string('profile_image')->nullable();
+            $table->string('gender');
+            $table->string('relationship');
+            $table->string('school')->nullable();
             $table->unsignedBigInteger('customer_id');
             $table->timestamps();
 

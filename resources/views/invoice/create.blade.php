@@ -28,17 +28,49 @@
                             @csrf
 
                             <!-- Customer ID -->
-                            <div class="form-group row">
-                                <label for="" class="col-md-4 col-form-label text-md-right">Customer</label>
-                                <div class="col-md-6">
-                                    <select id="customer_id" class="form-control" name="customer_id" required>
-                                        <option value="">Select Customer</option>
-                                        @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="form-group row">
+                                    <label for="" class="col-md-4 col-form-label text-md-right">Customer</label>
+                                    <div class="col-md-6">
+                                        <select id="customer_id" class="form-control" name="customer_id" required>
+                                            <option value="">Select Customer</option>
+                                            @foreach ($customers as $customer)
+                                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                        <a href="{{ route('customer.create') }}" class="btn btn-success">+</a>
+
                                 </div>
-                            </div>
+                                <div class="form-group row justify-content-center">
+
+                                    <a href="#" id="conformButton" class="btn btn-success">Conform</a>
+
+
+                                </div>
+                                <div id="textBoxContainer"></div>
+
+                                <div class="form-group row justify-content-center">
+                                    <div class="col-sm">
+                                        <div class="row">
+                                            <div class="col">
+                                                <input type="text" class="form-control" style="border: 1px solid #ced4da;" placeholder="Text Box">
+                                            </div>
+                                            <div class="col">
+                                                <select class="form-control" id="childNames" class="childNames">
+                                                    <option>Option 1</option>
+                                                    <option>Option 2</option>
+                                                    <option>Option 3</option>
+                                                </select>
+                                            </div>
+                                            <div class="col">
+                                                <button type="button" class="btn btn-primary">Button</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
 
                             <!-- In Time -->
                             <div class="form-group row">
@@ -145,16 +177,40 @@
         const inTime = document.getElementById('intime').value;
         var playedTime = document.getElementById('played-time').innerText.trim();
 
-        console.log(customerId);
-        console.log(inTime);
-        console.log(playedTime);
 
         var routeUrl = "{{ url('/invoice/generate/') }}" + '/' + playedTime  + '/' + customerId + '/' + inTime;
         window.location.href = routeUrl;
     });
 });
 
-    /////////////////
+    document.getElementById("conformButton").addEventListener("click", function() {
+        var customerId = document.getElementById("customer_id").value;
+
+
+        fetch("{{ route('fetch.children') }}?customerId=" + customerId)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                renderChildFields(data);
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+        function renderChildFields(children) {
+             
+        var childNamesSelect = document.getElementById("childNames");
+        childNamesSelect.innerHTML = ""; // Clear previous content
+
+    children.forEach(child => {
+        // Create an option element for each child and append it to the select element
+        var option = document.createElement("option");
+        option.value = child.id; // Assuming 'id' is the ID of the child
+        option.textContent = child.name; // Assuming 'name' is the name of the child
+        childNamesSelect.appendChild(option);
+        });
+    }
+
+    /////////////////http://127.0.0.1:8000/invoice/generate/1h%2056m/2/11:52
 
     </script>
 

@@ -11,17 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create('playtimes', function (Blueprint $table) {
+
+        Schema::create('discount', function (Blueprint $table) {
             $table->id();
-            $table->time('intime');
-            $table->date('date');
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
+            $table->string('coupon_code')->unique();
+            $table->decimal('price', 10, 2); // Assuming a decimal field for price with precision of 10 digits and 2 decimal places
             $table->timestamps();
         });
-
-
     }
 
     /**
@@ -29,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
-        Schema::dropIfExists('playtimes');
+        
+            Schema::dropIfExists('discount');
     }
 };

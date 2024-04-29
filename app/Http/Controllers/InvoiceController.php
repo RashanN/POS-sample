@@ -34,13 +34,6 @@ class InvoiceController extends Controller
         $time = $inTimes->format('H:i');
 
 
-        $todayDate = Carbon::now()->toDateString();
-        $playtime = new Playtimes();
-        $playtime->intime = $time;
-        $playtime->date = $todayDate;
-        $playtime->customer_id = $customerId;
-        $playtime->save();
-
 
         $products = Product::all();
         $played_time_formatted = $playedTime . 'm';

@@ -21,23 +21,21 @@ class CustomerController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string',
             'contact' => 'required|string',
-            'address' => 'nullable|string',
              'email' => 'nullable|email',
-           
+
         ]);
        ( $validatedData);
         try {
             // Create a new Customer instance
-            
+
             $customer = new Customer;
-          
+
             // Assign validated data to the customer attributes
             $customer->name = $validatedData['name'];
             $customer->contact = $validatedData['contact'];
-            $customer->address = $request->input('address');
             $customer->email = $request->input('email');
-    
-           
+
+
           ($customer);
             // Save the customer
             $customer->save();
@@ -52,13 +50,13 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-       
+
         return view('customer.index', compact('customers'));
     }
     public function show()
     {
     $customers = Customer::all();
-   
+
     return view('customer.index', compact('customers'));
     }
     public function edit(Customer $customer)
@@ -71,17 +69,16 @@ class CustomerController extends Controller
     $validatedData = $request->validate([
         'name' => 'required|string',
         'contact' => 'required|string',
-        'address' => 'nullable|string',
         'email' => 'nullable|email',
     ]);
 
     try {
         // Find the customer by its ID
         $customer = Customer::findOrFail($id);
-        
+
         // Update the customer attributes
         $customer->update($validatedData);
-        
+
         // Reload the customer instance to reflect the updated data
         $customer = $customer->fresh();
 

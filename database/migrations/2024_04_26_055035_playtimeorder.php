@@ -12,19 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('invoice', function (Blueprint $table) {
+        Schema::create('playtimeorder', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->decimal('total', 10, 2);
-            $table->string('discount');
-            $table->decimal('fine', 10, 2);
+            $table->time('intime');
+            $table->time('outtime');
+            $table->decimal('amount', 10, 2);
             $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('child_id');
+            $table->unsignedBigInteger('invoice_id');
             $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
-
+            $table->foreign('child_id')->references('id')->on('child')->onDelete('cascade');
+            $table->foreign('invoice_id')->references('id')->on('invoice')->onDelete('cascade');
             $table->timestamps();
 
         });
-
     }
 
     /**
@@ -33,5 +34,6 @@ return new class extends Migration
     public function down(): void
     {
         //
+        Schema::dropIfExists('playtimeorder');
     }
 };

@@ -29,7 +29,7 @@
                 <form action="{{ route('customer.store') }}" method="POST">
                     @csrf
                     <div class="form-group">
-                        <label for="name">Name:</label>
+                        <label for="name">Name: *</label>
                         <input type="text" class="form-control" id="name" name="name" required>
                     </div>
                     {{-- <div class="form-group">
@@ -38,17 +38,12 @@
                     </div>
                     --}}
                     <div class="form-group">
-                        <label for="address">Address:</label>
-                        <input type="text" class="form-control" id="address" name="address" >
-                    </div>
-                    
-                    <div class="form-group">
                         <label for="email">Email:</label>
                         <input type="email" class="form-control" id="email" name="email" >
                     </div>
-                    
+
                     <div class="form-group">
-                        <label for="contact_number">Contact Number:</label>
+                        <label for="contact_number">Contact Number: *</label>
                         <input type="text" class="form-control" id="contact" name="contact" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Create Customer</button>

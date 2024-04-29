@@ -67,3 +67,4 @@ Route::get('/invoice/generate/{playedTime}/{customerId}/{inTime}', [InvoiceContr
 Route::get('get-product-details', [InvoiceController::class, 'getProductDetails'])->name('get-product-details');
 
 Route::resource('child', ChildController::class);
+Route::get('/fetch-children', [ChildController::class, 'fetchChildren'])->name('fetch.children');

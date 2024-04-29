@@ -34,10 +34,7 @@
                 <label for="contact">Contact Number</label>
                 <input type="text" class="form-control" id="contact" name="contact" value="{{ $customer->contact }}">
             </div>
-            <div class="form-group">
-                <label for="address">Address:</label>
-                <input type="text" class="form-control" id="address" name="address" value="{{ $customer->address }}">
-            </div>
+    
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" class="form-control" id="email" name="email" value="{{ $customer->email }}">
