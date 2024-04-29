@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Customer;
 use App\Models\Playtimes;
 use Illuminate\Http\Request;
+use App\Models\playtimeorder;
 use App\Models\Playtimesprice;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -96,12 +97,37 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
     public function getTime(Request $request){
 
         $rfid = $request->input('rfid');
+        $childNames = $request->input('childName');
         $PriceRange = $request->input('PriceRange');
 
+        $child=Child::where('id',$childNames)->first();
         $intime = Intime::where('RFID', $rfid)->first();
         $outtime = Outtime::where('RFID', $rfid)->first();
 
-        return response()->json(['intime' => $intime ,'outtime' => $outtime]);
+        return response()->json(['rfid' => $rfid ,'child' => $child ,'intime' =>$intime , 'outtime' => $outtime]);
+    }
+
+    public function playTimeOrder(Request $request){
+
+        $jsonData = $request->input('data');
+
+        $dataArray = json_decode($jsonData, true);
+
+        if (!empty($dataArray)) {
+            foreach ($dataArray as $data) {
+                $today = $data['today'];
+                $childName = $data['childName'];
+                $rfid = $data['rfid'];
+
+                playtimeorder::create([
+                    'intime' => $rfid,
+                ]);
+
+            }
+
+            // Return a success response
+            return response()->json(['message' => $dataArray]);
+        }
     }
 
 
@@ -112,7 +138,7 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
     // // Fetch in-time and out-time data based on RFID
     // $intime = Intime::where('RFID', $RFID)->first();
     // $outtime = Outtime::where('RFID', $RFID)->first();
-       
+
     // // Prepare the data to return
     // $data = [
     //     'intime' => $intime ? $intime->intime : '-',

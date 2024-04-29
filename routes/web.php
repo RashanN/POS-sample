@@ -69,4 +69,5 @@ Route::get('get-product-details', [InvoiceController::class, 'getProductDetails'
 Route::resource('child', ChildController::class);
 Route::get('/fetch-children', [ChildController::class, 'fetchChildren'])->name('fetch.children');
 Route::get('get-time', [InvoiceController::class, 'getTime'])->name('get-time');
+Route::post('playTimeOrder', [InvoiceController::class, 'playTimeOrder'])->name('playTimeOrder');
 // Route::get('/fetch-intime-outtime', [InvoiceController::class, 'fetchIntimeOuttime'])->name('fetch.intime.outtime');
