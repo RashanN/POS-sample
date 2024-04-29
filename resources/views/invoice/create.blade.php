@@ -208,7 +208,7 @@
                 method: 'GET',
                 data: {
                     rfid: rfid,
-                    ChildID: ChildID
+                    PriceRange: PriceRange
                 },
                 beforeSend: function () {
                     // Show loader if needed

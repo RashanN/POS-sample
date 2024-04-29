@@ -96,10 +96,30 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
     public function getTime(Request $request){
 
         $rfid = $request->input('rfid');
-        $ChildID = $request->input('ChildID');
+        $PriceRange = $request->input('PriceRange');
 
-        $children = Child::where('id', $ChildID)->first();
-        
-        return response()->json(['rfid'=>$rfid, 'children'=>$children]);
+        $intime = Intime::where('RFID', $rfid)->first();
+        $outtime = Outtime::where('RFID', $rfid)->first();
+
+        return response()->json(['intime' => $intime ,'outtime' => $outtime]);
     }
+
+
+    // public function fetchIntimeOuttime(Request $request)
+    // {
+    // $RFID = $request->input('RFID');
+
+    // // Fetch in-time and out-time data based on RFID
+    // $intime = Intime::where('RFID', $RFID)->first();
+    // $outtime = Outtime::where('RFID', $RFID)->first();
+       
+    // // Prepare the data to return
+    // $data = [
+    //     'intime' => $intime ? $intime->intime : '-',
+    //     'outtime' => $outtime ? $outtime->outtime : '-',
+    // ];
+
+    // return response()->json($data);
+    // }
 }
+
