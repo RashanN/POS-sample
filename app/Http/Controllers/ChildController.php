@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Child;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Models\Playtimesprice;
+use Illuminate\Support\Facades\DB;
 
 class ChildController extends Controller
 {
     //
     public function create()
     {
-        $customers= Customer::all();
-        return view('child.create', compact('customers'));
+        $customers = Customer::all();
+       
+    return view('child.create', compact('customers'));
     }
     public function store(Request $request)
     {
@@ -94,7 +97,7 @@ class ChildController extends Controller
         $image->move($destinationPath, $profileImage);
         $child->profile_image = $profileImage;
     }
-    dd($child);
+    
     $child->save();
 
     return redirect()->back()->with('success', 'Child updated successfully.');
@@ -111,7 +114,7 @@ public function fetchChildren(Request $request) {
 
     // Fetch children associated with the selected customer
     $children = Child::where('customer_id', $customerId)->get();
-    
+   
     return response()->json($children);
 }
 }

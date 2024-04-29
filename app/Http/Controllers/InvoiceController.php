@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use DB;
+use App\Models\Child;
+use App\Models\Intime;
+use App\Models\Outtime;
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\Playtimes;
 use Illuminate\Http\Request;
 use App\Models\Playtimesprice;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class InvoiceController extends Controller
@@ -18,25 +21,25 @@ class InvoiceController extends Controller
     {
         $customers = Customer::all(); // Fetch all customers
         $products = Product::all(); // Fetch all products
+        $priceranges = Playtimesprice::all();
 
-
-        return view('invoice.create', ['customers' => $customers, 'products' => $products]);
+        return view('invoice.create', compact('customers', 'products', 'priceranges'));
     }
 
     public function generate(Request $request)
     {
-        $playedTime = $request->route('playedTime');
-        $customerId = $request->route('customerId');
-        $inTime = $request->route('inTime');
+        // $playedTime = $request->route('playedTime');
+        // $customerId = $request->route('customerId');
+        // $inTime = $request->route('inTime');
 
-        list($hours, $minutes) = explode(':', $inTime);
-        $inTimes = Carbon::createFromTime($hours, $minutes);
-        $time = $inTimes->format('H:i');
+        // list($hours, $minutes) = explode(':', $inTime);
+        // $inTimes = Carbon::createFromTime($hours, $minutes);
+        // $time = $inTimes->format('H:i');
 
 
 
         $products = Product::all();
-        $played_time_formatted = $playedTime . 'm';
+        // $played_time_formatted = $playedTime . 'm';
 
         $playtimesprice= Playtimesprice::all();
 
@@ -47,7 +50,7 @@ class InvoiceController extends Controller
         $d=Playtimesprice::where('name', 'D')->value('price');
     // Extract hours and minutes from the string
     $matches = [];
-    preg_match('/(\d+)h (\d+)m/', $played_time_formatted, $matches);
+    //preg_match('/(\d+)h (\d+)m/', $played_time_formatted, $matches);
 
     // Extract hours and minutes from the matches array
     $hours = isset($matches[1]) ? (int) $matches[1] : 0;
@@ -90,5 +93,13 @@ class InvoiceController extends Controller
 return response()->json(['quantity'=>$quantity, 'products'=>$products]);
     }
 
+    public function getTime(Request $request){
 
+        $rfid = $request->input('rfid');
+        $ChildID = $request->input('ChildID');
+
+        $children = Child::where('id', $ChildID)->first();
+        
+        return response()->json(['rfid'=>$rfid, 'children'=>$children]);
+    }
 }

@@ -121,8 +121,9 @@
 
             var productId = document.getElementById('product').value;
              console.log(productId);
-              var quantity = document.getElementsByName('quantity')[0].value;
-    console.log(quantity);
+              var quantity = document.getElementsByName('quantity').value;
+    
+          console.log(quantity);
             $.ajax({
                 url: '{{ route('get-product-details') }}',
                 method: 'GET',

@@ -18,10 +18,7 @@ class Customer extends Model
     {
         return $this->hasMany(Invoice::class);
     }
-    public function playtimes()
-    {
-        return $this->hasMany(Playtimes::class);
-    }
+   
     public function children()
     {
         return $this->hasMany(Child::class);

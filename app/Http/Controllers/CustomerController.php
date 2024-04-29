@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
@@ -50,7 +51,7 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-
+       
         return view('customer.index', compact('customers'));
     }
     public function show()
@@ -65,6 +66,7 @@ class CustomerController extends Controller
     }
     public function update(Request $request, $id)
 {
+    
     // Validate the incoming request data
     $validatedData = $request->validate([
         'name' => 'required|string',

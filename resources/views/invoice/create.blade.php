@@ -54,17 +54,25 @@
                                     <div class="col-sm">
                                         <div class="row">
                                             <div class="col">
-                                                <input type="text" class="form-control" style="border: 1px solid #ced4da;" placeholder="Text Box">
+                                                <input type="text" class="form-control" style="border: 1px solid #ced4da;" placeholder="RFID" id="RFID">
                                             </div>
                                             <div class="col">
                                                 <select class="form-control" id="childNames" class="childNames">
-                                                    <option>Option 1</option>
-                                                    <option>Option 2</option>
-                                                    <option>Option 3</option>
+                                                    
                                                 </select>
+                                               
                                             </div>
                                             <div class="col">
-                                                <button type="button" class="btn btn-primary">Button</button>
+                                                <select class="form-control" id="pricerange" class="pricerange">
+                                                    <option value="">Select Range</option>
+                                            @foreach ($priceranges as $pricerange)
+                                                <option value="{{ $pricerange->id }}">{{ $pricerange->name }}</option>
+                                            @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col">
+                                                <a href="#" id="addBtn" class="btn btn-success">Add</a>
                                             </div>
                                         </div>
                                     </div>
@@ -72,7 +80,7 @@
 
 
 
-                            <!-- In Time -->
+                            {{-- <!-- In Time -->
                             <div class="form-group row">
                                 <label for="intime" class="col-md-4 col-form-label text-md-right">In Time</label>
                                 <div class="col-md-6">
@@ -88,7 +96,7 @@
                                 <div class="col-md-6">
                                     <input id="outtime" type="time" class="form-control" name="outtime"  required>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <!-- Playtime Price -->
                             <div class="form-group row">
@@ -99,9 +107,11 @@
                                         <thead>
                                             <tr>
                                                 <th>Date</th>
+                                                <th>Child Name</th>
                                                 <th>Start Time</th>
                                                 <th>End Time</th>
                                                 <th>Played Time </th>
+                                                <th>Amount</th>
 
                                             </tr>
                                         </thead>
@@ -109,10 +119,12 @@
                                         <tbody>
                                             <tr id="time-row">
                                                 <td id="date"></td>
+                                                <td id="child-name">-</td>
                                                 <td id="start-time">-</td>
                                                 <td id="end-time">-</td>
                                                 <td id="played-time">-</td>
-
+                                                <td id="amount">-</td>
+                                                
 
 
                                             </tr>
@@ -131,42 +143,15 @@
     </div>
 </form>
     <script>
-        document.getElementById('intime').addEventListener('change', function() {
-            var inputTime = this.value;
-            document.getElementById('start-time').innerText = inputTime;
-        });
-        document.getElementById('outtime').addEventListener('change', function() {
-        var outputTime = this.value;
-        document.getElementById('end-time').innerText = outputTime;
-        updatePlayedTime();
-        });
-        var today = new Date();
+  
+    var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
         var yyyy = today.getFullYear();
         today = mm + '/' + dd + '/' + yyyy;
         document.getElementById('date').innerText = today;
-        function updatePlayedTime() {
-        var startTimeStr = document.getElementById('start-time').innerText;
-        var endTimeStr = document.getElementById('end-time').innerText;
-        if (startTimeStr !== '-' && endTimeStr !== '-') {
-            var startTime = new Date("2022-01-01T" + startTimeStr);
-            var endTime = new Date("2022-01-01T" + endTimeStr);
-            var timeDiff = endTime - startTime;
-            if (timeDiff >= 0) {
-                var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-                var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById('played-time').innerText = hours + 'h ' + minutes + 'm';
-            } else {
-                document.getElementById('played-time').innerText = 'Invalid Time';
-            }
-        } else {
-            document.getElementById('played-time').innerText = '-';
-        }
-    }
-
-
-
+    
+       
 
     document.addEventListener('DOMContentLoaded', function () {
     var generateBtn = document.querySelector('.generate-btn');
@@ -209,6 +194,39 @@
         childNamesSelect.appendChild(option);
         });
     }
+
+    document.getElementById("addBtn").addEventListener("click", function() { 
+            var rfid = document.getElementById("RFID").value;
+            console.log('sdsd',rfid); 
+            var ChildID = document.getElementById("childNames").value;
+            console.log('sdsd',ChildID); 
+            var PriceRange = document.getElementById("pricerange").value;
+            console.log('sdsd',PriceRange); 
+
+            $.ajax({
+                url: '{{ route('get-time') }}',
+                method: 'GET',
+                data: {
+                    rfid: rfid,
+                    ChildID: ChildID
+                },
+                beforeSend: function () {
+                    // Show loader if needed
+                },
+                success: function (data) {
+                    console.log(data);
+                    updateTable(data);
+                },
+                error: function (error) {
+                    console.log('Error fetching data:', error);
+                },
+                complete: function () {
+                    // Hide loader if needed
+                }
+            });
+    });
+
+
 
     /////////////////http://127.0.0.1:8000/invoice/generate/1h%2056m/2/11:52
 
