@@ -102,7 +102,7 @@
                     <div class="card text-dark bg-light mb-3" style="max-width: 30rem;">
                         <div class="card-header"><strong> Total Customers</strong></div>
                         <div class="card-body">
-                          <p class="card-title"></p>
+                          <p class="card-title">{{$customerCount}}</p>
 
                         </div>
                     </div>

@@ -176,9 +176,13 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
         if (!empty($dataArray)) {
             foreach ($dataArray as $data) {
                 $today = $data['today'];
+                $intime = $data['intime'];
+                $outtime = $data['outtime'];
                 $childName = $data['childName'];
-                $rfid = $data['rfid'];
 
+                $rfid = $data['rfid'];
+                $customerId=$data['customerId'];
+                $amount=$data['amount'];
                 playtimeorder::create([
                     'intime' => $rfid,
                 ]);
