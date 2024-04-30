@@ -11,5 +11,9 @@ class playtimeorder extends Model
 
     protected $table = 'playtimeorder';
 
-    protected $fillable = ['intime'];
+    protected $fillable = [
+        'intime',
+        
+    
+    ];
 }

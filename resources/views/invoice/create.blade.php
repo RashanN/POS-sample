@@ -39,7 +39,7 @@
                                         </select>
                                     </div>
 
-                                        <a href="{{ route('customer.create') }}" class="btn btn-success">+</a>
+                                        <a href="{{ route('customer.create') }}" class="btn btn-secondary">+</a>
 
                                 </div>
                                 <div class="form-group row justify-content-center">
@@ -65,9 +65,8 @@
                                             <div class="col">
                                                 <select class="form-control" id="pricerange" class="pricerange">
                                                     <option value="">Select Range</option>
-                                            @foreach ($priceranges as $pricerange)
-                                                <option value="{{ $pricerange->id }}">{{ $pricerange->name }}</option>
-                                            @endforeach
+                                                    <option value="Kids">Kids</option>
+                                                    <option value="Toddler">Toddler</option>
                                                 </select>
                                             </div>
 
@@ -130,12 +129,20 @@
                                             </tr> --}}
                                         </tbody>
                                     </table>
-                                       <a href="" class="btn btn-success generate-btn">Generate</a>
+                                       
                                 </div>
                             </div>
                         </form>
-
-
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>Amount</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" name="amount" id="amount" class="form-control input-with-border">
+                        
+                            </div>
+                        </div>
+                            <a href="" class="btn btn-danger generate-btn">Generate</a>
                     </div>
                 </div>
             </div>
@@ -174,7 +181,7 @@
     document.getElementById("conformButton").addEventListener("click", function() {
         var customerId = document.getElementById("customer_id").value;
 
-
+        
         fetch("{{ route('fetch.children') }}?customerId=" + customerId)
             .then(response => response.json())
             .then(data => {
@@ -182,7 +189,16 @@
                 renderChildFields(data);
             })
             .catch(error => console.error('Error:', error));
+
+           
     });
+
+                document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("conformButton").addEventListener("click", function() {
+                    var customerId = document.getElementById("customer_id");
+                    customerId.disabled = true;
+                });
+            });
 
         function renderChildFields(children) {
 
@@ -244,61 +260,98 @@
         <td class="font_color row_padding" >${childData.name}</td>
         <td class="font_color row_padding">${data.intime.intime}</td>
         <td class="font_color row_padding">${data.outtime.outtime}</td>
-        <td class="font_color row_padding">${data.outtime.outtime - data.intime.intime}</td>
-        <td class="font_color row_padding">${data.rfid}</td>
+        <td class="font_color row_padding">${data.playedtime}</td>
+        <td id="tot" class="font_color row_padding">${data.amountprice}</td>
 
     `;
+    var tot = 0;
 
-}
+    document.querySelectorAll('#PlaytimeBody tr').forEach(function(row) {
+        var totalPriceCell = row.querySelector('#tot');
+        if (totalPriceCell) {
+            var totalPriceCellContent = totalPriceCell.textContent;
+            console.log(totalPriceCellContent);
+            tot += parseFloat(totalPriceCellContent);
+        }
+    });
 
-document.addEventListener('DOMContentLoaded', function() {
-    var generateBtn = document.querySelector('.generate-btn');
-    if (generateBtn) {
-        generateBtn.addEventListener('click', function(event) {
-            event.preventDefault();
+    console.log('Total:', tot);
+    updateAmount(tot);
+    var totalRow = tableBody.insertRow();
+    totalRow.innerHTML = `
+        <td hidden>Total:</td>
+        <td id="sum" colspan="3" " hidden>${tot}</td>
 
-            // Gather data from the table
-            var tableRows = document.querySelectorAll('#PlaytimeBody tr');
-            var rowData = [];
-            tableRows.forEach(function(row) {
-                var today = row.cells[0].textContent.trim();
-                var childName = row.cells[1].textContent.trim();
-                var rfid = row.cells[2].textContent.trim();
-
-                console.log('Row data:', { today: today, childName: childName, rfid: rfid }); // Log each row's data
-
-                rowData.push({ today: today, childName: childName, rfid: rfid });
-            });
-
-            console.log('Data to be sent:', rowData); // Log the data to be sent
-
-            // Send data to the controller via AJAX
-            $.ajax({
-                url: '{{ route('playTimeOrder') }}', // Route name for Laravel
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                data: { data: JSON.stringify(rowData) },
-                beforeSend: function() {
-                    // Show loader or perform any pre-AJAX actions
-                },
-                success: function(response) {
-                    console.log('Server response:', response);
-                    // Perform any actions after successful data submission
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error sending data:', error);
-                    console.log('Server response:', xhr.responseText); // Log the server response
-                    // Handle error if needed
-                },
-                complete: function() {
-                    // Hide loader or perform any post-AJAX actions
-                }
-            });
-        });
+    `;
     }
-});
+    function updateAmount(tot) {
+
+            var tot = 0;
+            document.querySelectorAll('#PlaytimeBody tr').forEach(function(row) {
+            var totalPriceCell = row.querySelector('#tot');
+            if (totalPriceCell) {
+                    var totalPriceCellContent = totalPriceCell.textContent;
+                    tot += parseFloat(totalPriceCellContent);
+            }
+            var amount = tot;
+            amount = amount.toFixed(2);
+            document.getElementsByName('amount')[0].value = amount;
+        });
+          
+
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var generateBtn = document.querySelector('.generate-btn');
+            if (generateBtn) {
+                generateBtn.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    var customerId = document.getElementById("customer_id").value;
+                    // Gather data from the table
+                    var tableRows = document.querySelectorAll('#PlaytimeBody tr');
+                    var rowData = [];
+                    tableRows.forEach(function(row) {
+                        var today = row.cells[0].textContent.trim();
+                        var childName = row.cells[1].textContent.trim();
+                        var intime = row.cells[2].textContent.trim();
+                        var outtime = row.cells[3].textContent.trim();
+                        var amount=row.cells[5].textContent.trim();
+
+                        console.log('Row data:', { today: today, childName: childName, intime: intime, outtime:outtime , amount:amount ,customerId:customerId}); // Log each row's data
+
+                        rowData.push({ today: today, childName: childName, rfid: rfid });
+                    });
+
+                    console.log('Data to be sent:', rowData); // Log the data to be sent
+
+                    // Send data to the controller via AJAX
+                    $.ajax({
+                        url: '{{ route('playTimeOrder') }}', // Route name for Laravel
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        data: { data: JSON.stringify(rowData) },
+                        beforeSend: function() {
+                            // Show loader or perform any pre-AJAX actions
+                        },
+                        success: function(response) {
+                            console.log('Server response:', response);
+                            // Perform any actions after successful data submission
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error sending data:', error);
+                            console.log('Server response:', xhr.responseText); // Log the server response
+                            // Handle error if needed
+                        },
+                        complete: function() {
+                            // Hide loader or perform any post-AJAX actions
+                        }
+                    });
+                });
+            }
+        });
 
     /////////////////http://127.0.0.1:8000/invoice/generate/1h%2056m/2/11:52
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Child;
 use App\Models\Intime;
 use App\Models\Outtime;
@@ -11,7 +12,6 @@ use App\Models\Playtimes;
 use Illuminate\Http\Request;
 use App\Models\playtimeorder;
 use App\Models\Playtimesprice;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -98,13 +98,73 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
 
         $rfid = $request->input('rfid');
         $childNames = $request->input('childName');
-        $PriceRange = $request->input('PriceRange');
+        $PriceRange = $request->input('pricerange');
 
         $child=Child::where('id',$childNames)->first();
         $intime = Intime::where('RFID', $rfid)->first();
         $outtime = Outtime::where('RFID', $rfid)->first();
+        if ($child === null) {
+            $child = []; 
+        }
 
-        return response()->json(['rfid' => $rfid ,'child' => $child ,'intime' =>$intime , 'outtime' => $outtime]);
+        if ($intime && $outtime) {
+            
+            $intime1 = Carbon::parse($intime->intime);
+            $outtime1 = Carbon::parse($outtime->outtime);
+            $diff = $outtime1->diff($intime1);
+        
+            $playedTime = sprintf('%02d:%02d', $diff->h, $diff->i);
+        
+           
+        } else {
+            $playedTime = "Wrong data. One or both records not found.";
+        }
+
+        $defaultprice = 0;
+        $amountprice = 0 ;
+        
+        if ($PriceRange === 'Kids') {
+            $priceModel = Playtimesprice::where('name', 'Kids')->first();
+            $defaultprice = $priceModel->price;
+            $a=Playtimesprice::where('name', 'A')->value('price');
+            list($hours, $minutes) = explode(':', $playedTime);
+
+            if ($hours < 1) {
+                $amountprice = $defaultprice;
+            }else if($hours==1){
+                $slots=ceil(($minutes) / 15);
+                $amountprice=$defaultprice+(($slots-1)*$a);
+            }else{
+                $slots=ceil(($minutes) / 15);
+                $hp=(($hours-1)*3*$a);
+                $amountprice=$defaultprice+(($slots-1)*$a)+$hp;
+            }
+                
+             
+
+                
+            }
+        elseif ($PriceRange === 'Toddler') {
+            $priceModel = Playtimesprice::where('name', 'Toddler')->first();
+            $defaultprice = $priceModel->price;
+            $b=Playtimesprice::where('name', 'B')->value('price');
+
+            list($hours, $minutes) = explode(':', $playedTime);
+            if ($hours < 1) {
+                $amountprice = $defaultprice;
+            }else if($hours==1){
+                $slots=ceil(($minutes) / 15);
+                $amountprice=$defaultprice+(($slots-1)*$b);
+            }else{
+                $slots=ceil(($minutes) / 15);
+                $hp=(($hours-1)*3*$b);
+                $amountprice=$defaultprice+(($slots-1)*$b)+$hp;
+            }
+                
+        }
+
+
+        return response()->json(['rfid' => $rfid ,'child' => $child ,'intime' =>$intime , 'outtime' => $outtime ,'playedtime' => $playedTime ,'amountprice' => $amountprice]);
     }
 
     public function playTimeOrder(Request $request){

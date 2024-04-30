@@ -14,7 +14,7 @@ class Child extends Model
         'dob',
         'name',
         'gender',
-        
+        'school'
     ];
     public function customer()
 {
