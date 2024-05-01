@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <link rel="stylesheet" href="{{asset('css/invoiceshow.css')}}">
     <!-- Custom CSS -->
     <style>
@@ -52,10 +53,16 @@
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <input type="number" class="form-control" name="quantity" value="1" min="1">
+                                {{-- <input type="number" class="form-control" name="quantity" min="1" id="quantity"> --}}
+                                <input type="number" class="form-control" name="qty" min="1" id="qty">
                             </div>
+
                             <div class="col-md-2">
+
                                 <button type="button" id="addProductBtn" class="btn btn-primary">Add</button>
+                            </div>
+                            <div class="col-md-3">
+
                             </div>
                         </div>
                     </form>
@@ -84,28 +91,35 @@
                             <h4>Amount</h4>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="amount"  class="form-control input-with-border" >
+                            <input type="text" name="amount" id="amount"  class="form-control input-with-border" >
                         </div>
                         <div class="col-md-6">
                             <h4>Discount</h4>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="discount"  class="form-control input-with-border" id="discountInput">
+                            <input type="text" name="discount"  class="form-control input-with-border" id="discount" value="0.00">
                         </div>
                         <div class="col-md-6">
                             <h4>Fine Payment</h4>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="finePayment"  class="form-control input-with-border" id="finetInput">
+                            <input type="text" name="fine"  class="form-control input-with-border" id="fine" value="0.00">
                         </div>
                         <div class="col-md-6">
                             <h4>Total</h4>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="total"  class="form-control input-with-border">
+                            <input type="text" name="total" id="total" class="form-control input-with-border" >
                         </div>
                     </div>
                 </div>
+                <div class="row ">
+                    <div class="col-md-6" style="align-items: center;text-align: center">
+                        <a href="" class="btn btn-danger final">Print</a>
+
+                    </div>
+                </div>
+
                 </div>
             </div>
         </div>
@@ -121,15 +135,16 @@
 
             var productId = document.getElementById('product').value;
              console.log(productId);
+
               var quantity = document.getElementsByName('quantity').value;
-    
-          console.log(quantity);
+                var qty=document.getElementById('qty').value;
+          console.log('quantity',qty);
             $.ajax({
                 url: '{{ route('get-product-details') }}',
                 method: 'GET',
                 data: {
                     productId: productId,
-                    quantity: quantity
+                    quantity: qty
                 },
                 beforeSend: function () {
                     // Show loader if needed
@@ -202,18 +217,18 @@
                             var totalPriceCellContent = totalPriceCell.textContent;
                             tot += parseFloat(totalPriceCellContent);
                     }
+                    var discount=document.getElementById('discount').value;
+                    var fine=document.getElementById('fine').value;
                     var amount = parseFloat(playedTimeTotalValue) + tot;
                     amount = amount.toFixed(2);
                     document.getElementsByName('amount')[0].value = amount;
+
+                    var total=amount-parseFloat(discount)+parseFloat(fine);
+                    total=parseFloat(total);
+                    document.getElementsByName('total')[0].value = total;
+
     });
-                    // if (typeof tot === 'undefined') {
-                    //        document.getElementsByName('amount')[0].value=parseFloat(playedTimeTotalValue);
-                    //     } else {
-                    //         var totFormatted = tot.toFixed(2);
-                    //         console.log('totFormatted:', totFormatted);
-                    //         amount = parseFloat(playedTimeTotalValue) + parseFloat(totFormatted);
-                    //         document.getElementsByName('amount')[0].value =amount;
-                    //     }
+
 
 
             }
@@ -221,7 +236,68 @@
             document.getElementsByName('played_time_total')[0].addEventListener('input', function() {
                 updateAmount(); // Update the amount input field when played_time_total changes
             });
+            document.getElementsByName('discount')[0].addEventListener('input', function() {
+                updateAmount(); // Update the amount input field when played_time_total changes
+            });
+            document.getElementsByName('fine')[0].addEventListener('input', function() {
+                updateAmount(); // Update the amount input field when played_time_total changes
+            });
 
-            
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+            var final = document.querySelector('.final');
+            if (final) {
+                final.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    var discount=document.getElementById('discount').value;
+                    var fine=document.getElementById('fine').value;
+                    var total=document.getElementById('total').value;
+                    // Gather data from the table
+                    var tableRows = document.querySelectorAll('#productTableBody tr');
+                    var rowData = [];
+                    tableRows.forEach(function(row) {
+
+                        var productName = row.cells[1].textContent.trim();
+                        console.log('rash',amount);
+                        var unitprice = row.cells[2].textContent.trim();
+                        var quantity = row.cells[3].textContent.trim();
+                        var amount=row.cells[5].textContent.trim();
+
+                        console.log('Row data:', {productName:productName, unitprice:unitprice,quantity:quantity,amount:amount}); // Log each row's data
+
+                        rowData.push({ childName:childName, intime:intime,outtime:outtime,amount:amount, customerId:customerId ,rfid:rfid ,child_id:child_id});
+                    });
+
+                    console.log('Data to be sent:', rowData); // Log the data to be sent
+
+                    // Send data to the controller via AJAX
+                    $.ajax({
+                        url: '{{ route('invoiceGenerator') }}', // Route name for Laravel
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        data: { data: JSON.stringify(rowData) },
+                        beforeSend: function() {
+                            // Show loader or perform any pre-AJAX actions
+                        },
+                        success: function(response) {
+                            console.log('Server response:', response);
+                            // Perform any actions after successful data submission
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error sending data:', error);
+                            console.log('Server response:', xhr.responseText); // Log the server response
+                            // Handle error if needed
+                        },
+                        complete: function() {
+                            // Hide loader or perform any post-AJAX actions
+                        }
+                    });
+
+                });
+            }
+        });
     </script>
 @endsection

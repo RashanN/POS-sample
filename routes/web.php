@@ -25,9 +25,10 @@ use App\Http\Controllers\ProductCategoryController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+
+Route::get('/invoice/show', function () {
+    return view('invoice.show');
+})->name('invoice.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -70,4 +71,5 @@ Route::resource('child', ChildController::class);
 Route::get('/fetch-children', [ChildController::class, 'fetchChildren'])->name('fetch.children');
 Route::get('get-time', [InvoiceController::class, 'getTime'])->name('get-time');
 Route::post('playTimeOrder', [InvoiceController::class, 'playTimeOrder'])->name('playTimeOrder');
+Route::post('invoiceGenerator', [InvoiceController::class, 'invoiceGenerator'])->name('invoiceGenerator');
 // Route::get('/fetch-intime-outtime', [InvoiceController::class, 'fetchIntimeOuttime'])->name('fetch.intime.outtime');

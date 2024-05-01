@@ -26,7 +26,13 @@ class InvoiceController extends Controller
 
         return view('invoice.create', compact('customers', 'products', 'priceranges'));
     }
+    public function index(){
 
+        $products = Product::all();
+        $amount=1000;
+
+        return view('invoice.show',['products' => $products,'amount'=>$amount]);
+    }
     public function generate(Request $request)
     {
         // $playedTime = $request->route('playedTime');
@@ -104,25 +110,25 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
         $intime = Intime::where('RFID', $rfid)->first();
         $outtime = Outtime::where('RFID', $rfid)->first();
         if ($child === null) {
-            $child = []; 
+            $child = [];
         }
 
         if ($intime && $outtime) {
-            
+
             $intime1 = Carbon::parse($intime->intime);
             $outtime1 = Carbon::parse($outtime->outtime);
             $diff = $outtime1->diff($intime1);
-        
+
             $playedTime = sprintf('%02d:%02d', $diff->h, $diff->i);
-        
-           
+
+
         } else {
             $playedTime = "Wrong data. One or both records not found.";
         }
 
         $defaultprice = 0;
         $amountprice = 0 ;
-        
+
         if ($PriceRange === 'Kids') {
             $priceModel = Playtimesprice::where('name', 'Kids')->first();
             $defaultprice = $priceModel->price;
@@ -139,10 +145,10 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
                 $hp=(($hours-1)*3*$a);
                 $amountprice=$defaultprice+(($slots-1)*$a)+$hp;
             }
-                
-             
 
-                
+
+
+
             }
         elseif ($PriceRange === 'Toddler') {
             $priceModel = Playtimesprice::where('name', 'Toddler')->first();
@@ -160,7 +166,7 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
                 $hp=(($hours-1)*3*$b);
                 $amountprice=$defaultprice+(($slots-1)*$b)+$hp;
             }
-                
+
         }
 
 
@@ -169,32 +175,60 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
 
     public function playTimeOrder(Request $request){
 
-        $jsonData = $request->input('data');
+        $products = Product::all();
 
+        $jsonData = $request->input('data');
+        (dd($jsonData));
         $dataArray = json_decode($jsonData, true);
 
         if (!empty($dataArray)) {
             foreach ($dataArray as $data) {
-                $today = $data['today'];
-                $intime = $data['intime'];
+               $intime = $data['intime'];
                 $outtime = $data['outtime'];
-                $childName = $data['childName'];
-
                 $rfid = $data['rfid'];
                 $customerId=$data['customerId'];
+                $child_id=$data['child_id'];
                 $amount=$data['amount'];
+
+
+                $playtimeorder=new playTimeOrder;
+
+               // $playtimeorder->intime = $intime;
+               // $playtimeorder->outtime = $outtime;
+
+                dd($playtimeorder);
+
                 playtimeorder::create([
-                    'intime' => $rfid,
+                  'intime' => $intime,
+                   'outtime'=>$outtime,
+                   'amount' => $amount,
+                    'customer_id' => $customerId,
+                    'child_id' => $child_id,
                 ]);
 
             }
 
             // Return a success response
-            return response()->json(['message' => $dataArray]);
+
+            //return response()->json(['message' => $dataArray]);
         }
+        return view('invoice.show',['products' => $products,'amount'=>$amount,'customerId' => $customerId]);
     }
 
 
+    public function invoiceGenerator(Request $request){
+
+
+        $jsonData = $request->input('data');
+        (dd($jsonData));
+        $dataArray = json_decode($jsonData, true);
+
+        if (!empty($dataArray)) {
+            foreach ($dataArray as $data) {
+
+
+        }
+    }
     // public function fetchIntimeOuttime(Request $request)
     // {
     // $RFID = $request->input('RFID');

@@ -129,7 +129,7 @@
                                             </tr> --}}
                                         </tbody>
                                     </table>
-                                       
+
                                 </div>
                             </div>
                         </form>
@@ -139,7 +139,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="text" name="amount" id="amount" class="form-control input-with-border">
-                        
+
                             </div>
                         </div>
                             <a href="" class="btn btn-danger generate-btn">Generate</a>
@@ -181,7 +181,7 @@
     document.getElementById("conformButton").addEventListener("click", function() {
         var customerId = document.getElementById("customer_id").value;
 
-        
+
         fetch("{{ route('fetch.children') }}?customerId=" + customerId)
             .then(response => response.json())
             .then(data => {
@@ -190,7 +190,7 @@
             })
             .catch(error => console.error('Error:', error));
 
-           
+
     });
 
                 document.addEventListener("DOMContentLoaded", function() {
@@ -203,13 +203,12 @@
         function renderChildFields(children) {
 
         var childNamesSelect = document.getElementById("childNames");
-        childNamesSelect.innerHTML = ""; // Clear previous content
+        childNamesSelect.innerHTML = "";
 
     children.forEach(child => {
-        // Create an option element for each child and append it to the select element
         var option = document.createElement("option");
-        option.value = child.id; // Assuming 'id' is the ID of the child
-        option.textContent = child.name; // Assuming 'name' is the name of the child
+        option.value = child.id;
+        option.textContent = child.name;
         childNamesSelect.appendChild(option);
         });
     }
@@ -297,7 +296,7 @@
             amount = amount.toFixed(2);
             document.getElementsByName('amount')[0].value = amount;
         });
-          
+
 
         }
 
@@ -308,19 +307,21 @@
                     event.preventDefault();
 
                     var customerId = document.getElementById("customer_id").value;
+                    var rfid = document.getElementById('RFID').value;
+                    var child_id = document.getElementById('childNames').value;
                     // Gather data from the table
                     var tableRows = document.querySelectorAll('#PlaytimeBody tr');
                     var rowData = [];
                     tableRows.forEach(function(row) {
-                        var today = row.cells[0].textContent.trim();
+
                         var childName = row.cells[1].textContent.trim();
                         var intime = row.cells[2].textContent.trim();
                         var outtime = row.cells[3].textContent.trim();
                         var amount=row.cells[5].textContent.trim();
+                
+                        console.log('Row data:', {childName:childName, intime:intime,outtime:outtime,amount:amount ,customerId:customerId ,rfid:rfid, child_id:child_id}); // Log each row's data
 
-                        console.log('Row data:', { today: today, childName: childName, intime: intime, outtime:outtime , amount:amount ,customerId:customerId}); // Log each row's data
-
-                        rowData.push({ today: today, childName: childName, rfid: rfid });
+                        rowData.push({ childName:childName, intime:intime,outtime:outtime,amount:amount, customerId:customerId ,rfid:rfid ,child_id:child_id});
                     });
 
                     console.log('Data to be sent:', rowData); // Log the data to be sent
