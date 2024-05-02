@@ -73,6 +73,7 @@ Route::get('get-time', [InvoiceController::class, 'getTime'])->name('get-time');
 Route::post('playTimeOrder', [InvoiceController::class, 'playTimeOrder'])->name('playTimeOrder');
 Route::post('invoiceGenerator', [InvoiceController::class, 'invoiceGenerator'])->name('invoiceGenerator');
 // Route::get('/fetch-intime-outtime', [InvoiceController::class, 'fetchIntimeOuttime'])->name('fetch.intime.outtime');
+Route::get('invoice.show', [InvoiceController::class, 'invoiceShow'])->name('invoice.show');
 
 
 Route::post('/search/customers', [CustomerController::class, 'search'])->name('search.customers');

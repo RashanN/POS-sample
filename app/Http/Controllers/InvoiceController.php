@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Child;
 use App\Models\Intime;
+use App\Models\Invoice;
 use App\Models\Outtime;
 use App\Models\Product;
 use App\Models\Customer;
@@ -174,47 +175,47 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
     }
 
     public function playTimeOrder(Request $request){
-
         $products = Product::all();
+        $jsonData = json_decode($request->input('data'), true);
+        $total = $request->input('total');
+        $customerId = $request->input('customerId');
 
-        $jsonData = $request->input('data');
-        (dd($jsonData));
-        $dataArray = json_decode($jsonData, true);
+        $invoice = new Invoice;
+        $invoice->customer_id = $customerId;
+        $invoice->save();
 
-        if (!empty($dataArray)) {
-            foreach ($dataArray as $data) {
-               $intime = $data['intime'];
-                $outtime = $data['outtime'];
-                $rfid = $data['rfid'];
-                $customerId=$data['customerId'];
-                $child_id=$data['child_id'];
-                $amount=$data['amount'];
+        $invoiceId = $invoice->id;
 
+        if (!empty($jsonData)) {
+            foreach ($jsonData as $data) {
+                $playtimeorder = new Playtimeorder; // Assuming your model name is Playtimeorder
 
-                $playtimeorder=new playTimeOrder;
+                // Assign values to the model properties
+                $playtimeorder->intime = $data['intime'];
+                $playtimeorder->outtime = $data['outtime'];
+                $playtimeorder->amount = $data['amount'];
+                $playtimeorder->customer_id = $data['customerId'];
+                $playtimeorder->child_id = $data['child_id'];
+                $playtimeorder->invoice_id = $invoiceId;
 
-               // $playtimeorder->intime = $intime;
-               // $playtimeorder->outtime = $outtime;
-
-                dd($playtimeorder);
-
-                playtimeorder::create([
-                  'intime' => $intime,
-                   'outtime'=>$outtime,
-                   'amount' => $amount,
-                    'customer_id' => $customerId,
-                    'child_id' => $child_id,
-                ]);
-
+                // Save the model to the database
+                $playtimeorder->save();
             }
-
-            // Return a success response
-
-            //return response()->json(['message' => $dataArray]);
         }
-        return view('invoice.show',['products' => $products,'amount'=>$amount,'customerId' => $customerId]);
+
+
+        return response()->json(['products' => $products, 'total' => $total]);
+        // return redirect()->route('invoice.show')->with(['products' => $products, 'total' => $total]);
+
     }
 
+    public function invoiceShow(Request $request){
+
+        $totalAmount = $request->query('totalAmount');
+        $products = Product::all();
+
+        return view('invoice.show', ['total' => $totalAmount, 'products'=>$products]);
+    }
 
     public function invoiceGenerator(Request $request){
 
@@ -247,3 +248,4 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
     // }
 }
 }
+

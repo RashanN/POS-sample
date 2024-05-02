@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invoice extends Model
 {
+    protected $table = 'invoice';
     use HasFactory;
 
     public function customer()

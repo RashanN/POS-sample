@@ -19,6 +19,7 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<meta name="csrf_token" content="{{ csrf_token() }}" />
 <!-- Custom CSS -->
 <style>
     /* Additional custom styles */
@@ -36,8 +37,8 @@
                     <div class="card-body">
                         <form method="POST" action="">
                             @csrf
-                            
-                       
+
+
                             <!-- Customer ID -->
                                 <div class="form-group row">
                                     <label for="" class="col-md-4 col-form-label text-md-right">Customer</label>
@@ -56,7 +57,7 @@
                                             </div>
                                         </div> --}}
 
-                                        
+
                                         <a href="{{ route('customer.create') }}" class="btn btn-secondary">+</a>
 
                                 </div>
@@ -92,7 +93,7 @@
                                                 <a href="#" id="addBtn" class="btn btn-success">Add</a>
                                                 <a href="{{ route('child.create') }}" class="btn btn-secondary">+</a>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -258,7 +259,7 @@
             }
         });
         });
-    
+
         function updateTable(data) {
     var childData = data.child;
     console.log(childData);
@@ -313,62 +314,74 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            var generateBtn = document.querySelector('.generate-btn');
-            if (generateBtn) {
-                generateBtn.addEventListener('click', function(event) {
-                    event.preventDefault();
+    var generateBtn = document.querySelector('.generate-btn');
+    if (generateBtn) {
+        generateBtn.addEventListener('click', function(event) {
+            event.preventDefault();
 
-                    var customerId = document.getElementById("customer_id").value;
-                    var rfid = document.getElementById('RFID').value;
-                    var child_id = document.getElementById('childNames').value;
-                    // Gather data from the table
-                    var tableRows = document.querySelectorAll('#PlaytimeBody tr');
-                    var rowData = [];
-                    tableRows.forEach(function(row) {
+            var customerId = document.getElementById("customer_id").value;
+            var rfid = document.getElementById('RFID').value;
+            var child_id = document.getElementById('childNames').value;
+            var total=document.getElementById('amount').value;
 
-                        var childName = row.cells[1].textContent.trim();
-                        var intime = row.cells[2].textContent.trim();
-                        var outtime = row.cells[3].textContent.trim();
-                        var amount=row.cells[5].textContent.trim();
-                
-                        console.log('Row data:', {childName:childName, intime:intime,outtime:outtime,amount:amount ,customerId:customerId ,rfid:rfid, child_id:child_id}); // Log each row's data
+            // Gather data from the table
+            var tableRows = document.querySelectorAll('#PlaytimeBody tr');
+            var rowData = [];
+            tableRows.forEach(function(row) {
+                // Check if enough cells exist in the row
+                if (row.cells.length >= 4) {
+                    var childName = row.cells[1].textContent.trim();
+                    var intime = row.cells[2].textContent.trim();
+                    var outtime = row.cells[3].textContent.trim();
+                    var amount = row.cells[5].textContent.trim();
 
-                        rowData.push({ childName:childName, intime:intime,outtime:outtime,amount:amount, customerId:customerId ,rfid:rfid ,child_id:child_id});
-                    });
+                    console.log('Row data:', { childName: childName, intime: intime, outtime: outtime, amount: amount, customerId: customerId, rfid: rfid, child_id: child_id }); // Log each row's data
 
-                    console.log('Data to be sent:', rowData); // Log the data to be sent
+                    rowData.push({ childName: childName, intime: intime, outtime: outtime, amount: amount, customerId: customerId, rfid: rfid, child_id: child_id });
+                } else {
+                    console.warn('Row skipped due to insufficient cells:', row);
+                }
+            });
 
-                    // Send data to the controller via AJAX
-                    $.ajax({
-                        url: '{{ route('playTimeOrder') }}', // Route name for Laravel
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        data: { data: JSON.stringify(rowData) },
-                        beforeSend: function() {
-                            // Show loader or perform any pre-AJAX actions
-                        },
-                        success: function(response) {
-                            console.log('Server response:', response);
-                            // Perform any actions after successful data submission
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error sending data:', error);
-                            console.log('Server response:', xhr.responseText); // Log the server response
-                            // Handle error if needed
-                        },
-                        complete: function() {
-                            // Hide loader or perform any post-AJAX actions
-                        }
-                    });
-                });
-            }
+            console.log('Data to be sent:', rowData); // Log the data to be sent
+
+            // Send data to the controller via AJAX
+            $.ajax({
+                url: '{{ route('playTimeOrder') }}', // Route name for Laravel
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: { data: JSON.stringify(rowData),
+                    total: total,
+                    customerId: customerId
+                },
+                beforeSend: function() {
+                    // Show loader or perform any pre-AJAX actions
+                },
+                success: function(response) {
+                    console.log('Server response:', response);
+                    var totalAmount = response.total;
+                    window.location.href = '{{ route('invoice.show') }}?totalAmount=' + totalAmount;
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error sending data:', error);
+                    console.log('Server response:', xhr.responseText); // Log the server response
+                    // Handle error if needed
+                },
+                complete: function() {
+                    // Hide loader or perform any post-AJAX actions
+                }
+            });
         });
-       // search for customer 
+    }
+});
+
+       // search for customer
         $(document).ready(function(){
         $('#customer_name').keyup(function(){
-            
+
             var query = $(this).val();
             console.log(query);
             if(query != ''){

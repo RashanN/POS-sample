@@ -43,7 +43,7 @@
                             <h4>Played Time Total:</h4>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="played_time_total" value="{{ $amount }}.00" class="form-control" style="font-weight: 700" autofocus>
+                            <input type="text" name="played_time_total" value="{{ $total }}" class="form-control" style="font-weight: 700" autofocus>
                         </div>
                     </div>
 
@@ -310,4 +310,3 @@
         });
     </script>
 </x-app-layout>
-   
