@@ -246,4 +246,4 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
     // return response()->json($data);
     // }
 }
-
+}

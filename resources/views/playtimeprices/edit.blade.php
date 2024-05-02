@@ -1,6 +1,14 @@
-@extends('layouts.land')
+<x-app-layout>
+    {{-- <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot> --}}
+	@include('layouts.navigation')
 
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -14,6 +22,7 @@
         margin-top: 50px;
     }
 </style>
+</head>
 <div class="container">
     @if(session('success'))
         <div class="alert alert-success" role="alert">
@@ -32,7 +41,7 @@
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $playtimeprice->name }}" required autofocus >
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $playtimeprice->name }} " readonly required autofocus >
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -67,4 +76,4 @@
         </div>
     </div>
 </div>
-@endsection
+</x-app-layout>

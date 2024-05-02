@@ -1,3 +1,12 @@
+<x-app-layout>
+    {{-- <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot> --}}
+    @include('layouts.navigation1')
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +53,7 @@
 
                     <div class="form-group">
                         <label for="contact_number">Contact Number: *</label>
-                        <input type="text" class="form-control" id="contact" name="contact" required>
+                        <input type="number" class="form-control" id="contact" name="contact" required min="10" max="10" >
                     </div>
                     <button type="submit" class="btn btn-primary">Create Customer</button>
                 </form>
@@ -56,3 +65,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+</x-app-layout>

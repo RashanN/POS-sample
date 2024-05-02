@@ -11,6 +11,7 @@ class PlaytimespriceController extends Controller
   
         public function index()
     {
+
         $playtimePrices = Playtimesprice::all();
         return view('playtimeprices.index', compact('playtimePrices'));
     }
@@ -32,15 +33,16 @@ class PlaytimespriceController extends Controller
     }
     public function edit( Playtimesprice $playtimeprice)
     {
+       
         return view('playtimeprices.edit', compact('playtimeprice'));
     }
 
     public function update(Request $request, Playtimesprice $playtimeprice)
     {
-        dd($request);
-        dd($playtimeprice);
+        $playtimePrices = Playtimesprice::all();
+       
         $request->validate([
-            'name' => 'required|string|max:255',
+             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
         ]);
 
@@ -51,7 +53,7 @@ class PlaytimespriceController extends Controller
     }
 public function show($id)
 {
-    $playtimePrice = Playtimesprice::findOrFail($id);
-    return view('playtimeprices.index', compact('playtimePrice'));
+    $playtimePrices = Playtimesprice::all();
+    return view('playtimeprices.index', compact('playtimePrices'));
 }
 }

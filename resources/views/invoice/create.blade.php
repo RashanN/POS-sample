@@ -1,14 +1,24 @@
-@extends('layouts.land')
+<x-app-layout>
+    {{-- <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot> --}}
+    @include('layouts.navigation1')
 
-@section('content')
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>All Products</title>
 <!-- Bootstrap CSS -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <!-- Custom CSS -->
 <style>
     /* Additional custom styles */
@@ -16,7 +26,7 @@
         margin-top: 50px;
     }
 </style>
-
+</head>
 
     <div class="container">
         <div class="row justify-content-center">
@@ -26,7 +36,8 @@
                     <div class="card-body">
                         <form method="POST" action="">
                             @csrf
-
+                            
+                       
                             <!-- Customer ID -->
                                 <div class="form-group row">
                                     <label for="" class="col-md-4 col-form-label text-md-right">Customer</label>
@@ -37,8 +48,15 @@
                                                 <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                        </div>
 
+                                        {{-- <div class="col-md-6">
+                                            <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Type to search customers" required>
+                                            <div id="customerList">
+                                            </div>
+                                        </div> --}}
+
+                                        
                                         <a href="{{ route('customer.create') }}" class="btn btn-secondary">+</a>
 
                                 </div>
@@ -72,7 +90,9 @@
 
                                             <div class="col">
                                                 <a href="#" id="addBtn" class="btn btn-success">Add</a>
+                                                <a href="{{ route('child.create') }}" class="btn btn-secondary">+</a>
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -116,17 +136,6 @@
                                         </thead>
                                         <!-- Table body (data should come from controller) -->
                                         <tbody id="PlaytimeBody">
-                                            {{-- <tr id="time-row">
-                                                <td id="date"></td>
-                                                <td id="child-name">-</td>
-                                                <td id="start-time">-</td>
-                                                <td id="end-time">-</td>
-                                                <td id="played-time">-</td>
-                                                <td id="amount">-</td>
-
-
-
-                                            </tr> --}}
                                         </tbody>
                                     </table>
 
@@ -149,9 +158,11 @@
         </div>
     </div>
 </form>
-
+</x-app-layout>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script>
 
     var today = new Date();
@@ -240,13 +251,14 @@
             },
             error: function (error) {
                 console.log('Error fetching data:', error);
+                alert('Wrong input');
             },
             complete: function () {
                 // Hide loader if needed
             }
         });
         });
-
+    
         function updateTable(data) {
     var childData = data.child;
     console.log(childData);
@@ -353,9 +365,33 @@
                 });
             }
         });
+       // search for customer 
+        $(document).ready(function(){
+        $('#customer_name').keyup(function(){
+            
+            var query = $(this).val();
+            console.log(query);
+            if(query != ''){
+                $.ajax({
+                    url:"{{ route('search.customers') }}",
+                    method:"POST",
+                    data:{query:query, "_token": "{{ csrf_token() }}"},
+                    success:function(data){
+                        $('#customerList').fadeIn();
+                        $('#customerList').html(data);
+                        console.log('outdata',data);
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', 'li', function(){
+            $('#customer_name').val($(this).text());
+            $('#customerList').fadeOut();
+        });
+    });
 
     /////////////////http://127.0.0.1:8000/invoice/generate/1h%2056m/2/11:52
 
     </script>
 
-@endsection

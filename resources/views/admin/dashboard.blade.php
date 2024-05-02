@@ -1,9 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">
+    {{-- <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
         </h2>
-    </x-slot>
+    </x-slot> --}}
+	@include('layouts.navigation')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,37 +41,33 @@
 			<div class="vertical_bar">
 
 				<ul class="menu">
-					<li><a href="{{ route('customer.index') }}">
+					<li><a href="{{route('product_category.index')}}">
 						<span class="icon"><i class="fas fa-home"></i></span>
-						<span class="text">Customers</span>
+						<span class="text">Product Category</span>
 					</a></li>
 					<li><a href="#" class="active">
 						<span class="icon"><i class="fas fa-file-alt"></i></span>
 						<span class="text">Dashboard</span>
 					</a></li>
-                    <li><a href="{{ route('product.index') }}">
+					<li><a href="{{ route('product.index') }}">
 						<span class="icon"><i class="fas fa-home"></i></span>
 						<span class="text">Products</span>
 					</a></li>
-                    <li><a href="{{route('product_category.index')}}">
-						<span class="icon"><i class="fas fa-home"></i></span>
-						<span class="text">Product Category</span>
-					</a></li>
-					<li><a href="{{ route('invoice.create') }}">
-						<span class="icon"><i class="fas fa-chart-pie"></i></span>
-						<span class="text">Invoice</span>
-					</a></li>
-					<li><a href="">
+					<li><a href="{{ route('product.create') }}">
 						<span class="icon"><i class="fas fa-cog"></i></span>
 						<span class="text">Add New Product  </span>
 					</a></li>
                     <li><a href="">
 						<span class="icon"><i class="fas fa-cog"></i></span>
-						<span class="text">Check Stock</span>
+						<span class="text">Total Income</span>
 					</a></li>
                     <li><a href="{{ route('supplier.index') }}">
 						<span class="icon"><i class="fas fa-cog"></i></span>
 						<span class="text">Supplier</span>
+					</a></li>
+					<li><a href="{{ route('playtimeprices.index') }}">
+						<span class="icon"><i class="fas fa-cog"></i></span>
+						<span class="text">Playtime Prices</span>
 					</a></li>
 
 				</ul>

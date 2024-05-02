@@ -19,37 +19,30 @@ class ChildController extends Controller
     }
     public function store(Request $request)
     {
-
-       $validatedData = $request->validate([
-        'parent_id' => 'required|integer',
-        'name' => 'required|string|max:255',
-        'DOB' => 'required|date',
-        'gender' => 'required|string|in:male,female',
-        'school' => 'nullable|string|max:255',
-        'relationship' => 'nullable|string|max:255',
-        'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-    ]);
-
-        dd($validatedData);
+       // dd($request);
+        $validatedData = $request->validate([
+            'parent_id' => 'required|integer',
+            'name' => 'required|string|max:255',
+            'dob' => 'required|date',
+            'gender' => 'required|string|in:male,female',
+            'school' => 'nullable|string|max:255',
+            'relationship' => 'nullable|string|max:255',
+        ]);
+    
+     //   dd($validatedData);
         $child = new Child();
         $child->customer_id = $validatedData['parent_id'];
         $child->name = $validatedData['name'];
-        $child->DOB = $validatedData['DOB'];
+        $child->DOB = $validatedData['dob'];
         $child->gender = $validatedData['gender'];
         $child->relationship = $validatedData['relationship'];
         $child->school = $validatedData['school'];
 
-        if ($request->hasFile('profile_image')) {
-            $image = $request->file('profile_image');
-            $destinationPath = 'image/';
-            $profileImage = date('YmHis') . "." . $image->getClientOriginalExtension();
-            $image->move($destinationPath, $profileImage);
-            $child->profile_image = $profileImage;
-        }
-
+       
+      //  dd($child); 
         $child->save();
 
-        return redirect()->back()->with('success', 'Child saved successfully.');
+        return redirect()->route('child.index')->with('success', 'Child saved successfully.');
     }
     public function index()
     {

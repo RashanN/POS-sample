@@ -111,7 +111,7 @@
                     <li class="nav-item dropdown no-arrow btn btn-brand ms-lg-3">
                         <div class="nav-item dropdown no-arrow">
                             <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown"
-                                href="#">{{ Auth::user()->name }}</a>
+                                href="">{{ Auth::user()->name }}</a>
                             <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
                                 <a class="dropdown-item" href=""><i
                                         class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>

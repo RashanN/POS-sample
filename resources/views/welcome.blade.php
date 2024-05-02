@@ -34,9 +34,12 @@
                 </div>
             @endif
 
-
-
-
+            <div style="background-image: url('/image/bgimage.jpeg');">
+                <h1 style="font-size: 40px; color: #ef4444; font-weight: 700; background-color: rgba(255, 255, 255, 0.8);">
+                    Welcome to House of Play
+                </h1>
+            </div>
+        
                 <!-- Content goes here -->
             </div>
             

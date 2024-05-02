@@ -1,6 +1,16 @@
-@extends('layouts.land')
+<x-app-layout>
+    {{-- <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot> --}}
+    @include('layouts.navigation1')
 
-@section('content')
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -15,6 +25,7 @@
 
     }
 </style>
+    </head>
 <div class="container">
     <div class="row">
         <div class="col-md-6">
@@ -33,7 +44,6 @@
                     <th scope="col">Child Name</th>
                     <th scope="col">Date of Birth</th>
                     <th scope="col">School</th>
-                    <th scope="col">Profile Image</th>
                     <th scope="col">Actions</th>
 
                 </tr>
@@ -47,13 +57,7 @@
                         <td>{{ $child->name }}</td>
                         <td>{{ $child->DOB }}</td>
                         <td>{{ $child->school ?: 'N/A' }}</td>
-                        <td>
-                            @if ($child->profile_image)
-                                <img src="{{ asset('image/' . $child->profile_image) }}" alt="Profile Image" style="max-width: 100px;">
-                            @else
-                                No Image
-                            @endif
-                        </td>
+                       
                         <td>
                             <a href="{{ route('child.edit', $child->id) }}" class="btn btn-primary">Edit</a> <!-- Edit button -->
                             <form action="" method="POST" style="display: inline;">
@@ -67,4 +71,4 @@
             </tbody>
         </table>
     </div>
-@endsection
+</x-app-layout>

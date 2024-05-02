@@ -1,7 +1,15 @@
 
-@extends('layouts.land')
+<x-app-layout>
+    {{-- <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot> --}}
+	@include('layouts.navigation')
 
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -15,6 +23,7 @@
         margin-top: 50px;
     }
 </style>
+</head>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -22,25 +31,28 @@
                 <div class="card-header">Playtime Prices</div>
                 <div class="card-body">
                     <a href="{{ route('playtimeprices.create') }}" class="btn btn-primary mb-3">Create New Playtime Price</a>
-
+                        {{-- {{dd($playtimePrices )}}$playtimePrices->isEmpty() --}}
                     @if ($playtimePrices->isEmpty())
                         <p>No playtime prices found.</p>
                     @else
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Price</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                               
                                 @foreach ($playtimePrices as $playtimePrice)
                                     <tr>
+                                        <td>{{ $playtimePrice->id }}</td>
                                         <td>{{ $playtimePrice->name }}</td>
                                         <td>{{ $playtimePrice->price }}</td>
                                         <td>
-                                            <a href="{{ route('playtimeprices.update', $playtimePrice->id) }}" class="btn btn-sm btn-info">Edit</a>
+                                            <a href="{{ route('playtimeprices.edit', $playtimePrice->id) }}" class="btn btn-primary">Edit</a>
                                             <!-- Add delete button and form here -->
                                         </td>
                                     </tr>
@@ -53,4 +65,4 @@
         </div>
     </div>
 </div>
-@endsection
+</x-app-layout>

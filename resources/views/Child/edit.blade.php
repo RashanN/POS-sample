@@ -1,6 +1,14 @@
-@extends('layouts.land')
+<x-app-layout>
+    {{-- <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot> --}}
+    @include('layouts.navigation1')
 
-@section('content')
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -14,6 +22,7 @@
         margin-top: 50px;
     }
 </style>
+    </head>
 <div class="container">
     <h1>Edit Child</h1>
     @if(session('success'))
@@ -54,18 +63,8 @@
             <input type="text" class="form-control" id="relationship" name="relationship" value="{{$child->relationship}}">
         </div>
 
-        <div class="form-group">
-            <label for="profile_image">Profile Image:</label>
-            <input type="file" class="form-control-file" id="profile_image" name="profile_image">
-            @if ($child->profile_image)
-                <img src="{{ asset('image/' . $child->profile_image) }}" alt="Profile Image" style="max-width: 100px;">
-            @else
-                <p>No image available</p>
-            @endif
-        </div>
-
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
 
 </div>
-@endsection
+</x-app-layout>

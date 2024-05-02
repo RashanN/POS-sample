@@ -10,11 +10,12 @@ class Child extends Model
     use HasFactory;
     protected $table = 'child';
     protected $fillable = [
-        'customer_id',
-        'dob',
+        'parent_id',
         'name',
+        'DOB',
         'gender',
-        'school'
+        'relationship',
+        'school',
     ];
     public function customer()
 {

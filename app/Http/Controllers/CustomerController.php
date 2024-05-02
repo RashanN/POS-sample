@@ -21,7 +21,7 @@ class CustomerController extends Controller
         // Validate incoming request data
         $validatedData = $request->validate([
             'name' => 'required|string',
-            'contact' => 'required|string',
+            'contact' => 'required|numeric|max:10|min:10',
              'email' => 'nullable|email',
 
         ]);
@@ -103,6 +103,14 @@ class CustomerController extends Controller
 
         // Redirect back to the customer index page with a success message
         return redirect()->route('customer.index')->with('success', 'Customer deleted successfully!');
+    }
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $customers = Customer::where('name', 'like', "%$query%")->get();
+
+        return view('partials.customer_list')->with('customers', $customers);
     }
 
 
