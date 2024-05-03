@@ -42,30 +42,32 @@
                             <!-- Customer ID -->
                                 <div class="form-group row">
                                     <label for="" class="col-md-4 col-form-label text-md-right">Customer</label>
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <select id="customer_id" class="form-control" name="customer_id" required>
                                             <option value="">Select Customer</option>
                                             @foreach ($customers as $customer)
                                                 <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                             @endforeach
                                         </select>
-                                        </div>
-
-                                        {{-- <div class="col-md-6">
-                                            <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Type to search customers" required>
-                                            <div id="customerList">
-                                            </div>
                                         </div> --}}
 
 
-                                        <a href="{{ route('customer.create') }}" class="btn btn-secondary">+</a>
+                                        <div style="display: flex; align-items: center;">
+                                            <input type="text" id="searchBox" placeholder="Search customers...">
+                                            <input type="hidden" id="customer_id"> <!-- Hidden field to store the selected customer ID -->
+                                            <a href="{{ route('customer.create') }}" class="btn btn-secondary" style="margin-left: 10px;">+</a>
+                                        </div>
+
 
                                 </div>
                                 <div class="form-group row justify-content-center">
+                                    <ul id="customerList"></ul>
 
+
+
+                                </div>
+                                <div class="form-group row justify-content-center">
                                     <a href="#" id="conformButton" class="btn btn-success">Conform</a>
-
-
                                 </div>
                                 <div id="textBoxContainer"></div>
 
@@ -97,26 +99,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
-                            {{-- <!-- In Time -->
-                            <div class="form-group row">
-                                <label for="intime" class="col-md-4 col-form-label text-md-right">In Time</label>
-                                <div class="col-md-6">
-                                    <input id="intime" type="time" class="form-control" name="intime" required>
-                                </div>
-                            </div>
-
-
-
-                            <!-- Out Time -->
-                            <div class="form-group row">
-                                <label for="outtime" class="col-md-4 col-form-label text-md-right">Out Time</label>
-                                <div class="col-md-6">
-                                    <input id="outtime" type="time" class="form-control" name="outtime"  required>
-                                </div>
-                            </div> --}}
 
                             <!-- Playtime Price -->
                             <div class="form-group row">
@@ -161,7 +143,7 @@
 </form>
 </x-app-layout>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script>
@@ -171,28 +153,10 @@
         var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
         var yyyy = today.getFullYear();
         today = mm + '/' + dd + '/' + yyyy;
-        // document.getElementById('date').innerText = today;
-
-
-
-//     document.addEventListener('DOMContentLoaded', function () {
-//     var generateBtn = document.querySelector('.generate-btn');
-//     generateBtn.addEventListener('click', function (event) {
-//         event.preventDefault(); // Prevent the default action of the anchor tag
-
-//         const customerId = document.getElementById('customer_id').value;
-//         const inTime = document.getElementById('intime').value;
-//         var playedTime = document.getElementById('played-time').innerText.trim();
-
-
-//         var routeUrl = "{{ url('/invoice/generate/') }}" + '/' + playedTime  + '/' + customerId + '/' + inTime;
-//         window.location.href = routeUrl;
-//     });
-// });
 
     document.getElementById("conformButton").addEventListener("click", function() {
         var customerId = document.getElementById("customer_id").value;
-
+        console.log(customerId);
 
         fetch("{{ route('fetch.children') }}?customerId=" + customerId)
             .then(response => response.json())
@@ -217,12 +181,20 @@
         var childNamesSelect = document.getElementById("childNames");
         childNamesSelect.innerHTML = "";
 
-    children.forEach(child => {
-        var option = document.createElement("option");
-        option.value = child.id;
-        option.textContent = child.name;
-        childNamesSelect.appendChild(option);
+
+        if (children && children.length > 0) {
+        children.forEach(child => {
+            var option = document.createElement("option");
+            option.value = child.id;
+            option.textContent = child.name;
+            childNamesSelect.appendChild(option);
         });
+    } else {
+        var option = document.createElement("option");
+        option.value = "no child";
+        option.textContent = "No Child";
+        childNamesSelect.appendChild(option);
+    }
     }
 
     document.getElementById('addBtn').addEventListener('click', function(event) {
@@ -262,7 +234,7 @@
 
         function updateTable(data) {
     var childData = data.child;
-    console.log(childData);
+    console.log('farm',childData);
 
     var tableBody = document.getElementById('PlaytimeBody');
     var row = tableBody.insertRow();
@@ -379,31 +351,31 @@
 });
 
        // search for customer
-        $(document).ready(function(){
-        $('#customer_name').keyup(function(){
-
+       $(document).ready(function() {
+        $('#searchBox').keyup(function() {
             var query = $(this).val();
-            console.log(query);
-            if(query != ''){
+            if(query != '') {
                 $.ajax({
-                    url:"{{ route('search.customers') }}",
-                    method:"POST",
-                    data:{query:query, "_token": "{{ csrf_token() }}"},
-                    success:function(data){
-                        $('#customerList').fadeIn();
-                        $('#customerList').html(data);
-                        console.log('outdata',data);
+                    url: "{{ route('search.customers') }}",
+                    method: "POST",
+                    data: {query: query, "_token": "{{ csrf_token() }}"},
+                    success: function(data) {
+                        $('#customerList').empty();
+                        $.each(data, function(key, customer) {
+                            $('#customerList').append('<li class="customer" data-id="' + customer.id + '">' + customer.name + '</li>');
+                        });
                     }
                 });
             }
         });
 
-        $(document).on('click', 'li', function(){
-            $('#customer_name').val($(this).text());
-            $('#customerList').fadeOut();
+        $(document).on('click', '.customer', function() {
+            var selectedCustomer = $(this);
+            $('#searchBox').val(selectedCustomer.text());
+            $('#customer_id').val(selectedCustomer.data('id')); // Set the selected customer's ID in the hidden field
+            $('#customerList').empty(); // Clear the search results
         });
     });
-
     /////////////////http://127.0.0.1:8000/invoice/generate/1h%2056m/2/11:52
 
     </script>

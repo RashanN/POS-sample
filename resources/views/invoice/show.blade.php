@@ -80,6 +80,7 @@
                         <!-- Table header -->
                         <thead>
                             <tr>
+                                <th>ProductID</th>
                                 <th>Product Name</th>
                                 <th>Unit Price</th>
                                 <th>Quantity</th>
@@ -179,6 +180,7 @@
     var row = tableBody.insertRow();
 
     row.innerHTML = `
+        <td class="font_color row_padding">${productsData.id}</td>
         <td class="font_color row_padding">${productsData.name}</td>
         <td class="font_color row_padding" contenteditable="true">${productsData.unitprice}</td>
         <td class="font_color row_padding">${data.quantity}</td>
@@ -260,50 +262,64 @@
                 final.addEventListener('click', function(event) {
                     event.preventDefault();
                     var discount=document.getElementById('discount').value;
+                    console.log(discount);
                     var fine=document.getElementById('fine').value;
+                    console.log(fine);
                     var total=document.getElementById('total').value;
+                    console.log(total);
+
                     // Gather data from the table
                     var tableRows = document.querySelectorAll('#productTableBody tr');
                     var rowData = [];
-                    tableRows.forEach(function(row) {
+            tableRows.forEach(function(row) {
+                // Check if enough cells exist in the row
+                if (row.cells.length >= 6) {
+                    var Product_id = row.cells[0].textContent.trim();
+                    var ProductName = row.cells[1].textContent.trim();
+                    var unitprice = row.cells[2].textContent.trim();
+                    var quantity = row.cells[3].textContent.trim();
+                    var totalprice = row.cells[4].textContent.trim();
 
-                        var productName = row.cells[1].textContent.trim();
-                        console.log('rash',amount);
-                        var unitprice = row.cells[2].textContent.trim();
-                        var quantity = row.cells[3].textContent.trim();
-                        var amount=row.cells[5].textContent.trim();
+                    console.log('Row data:', { Product_id: Product_id, unitprice: unitprice, quantity: quantity, totalprice: totalprice }); // Log each row's data
 
-                        console.log('Row data:', {productName:productName, unitprice:unitprice,quantity:quantity,amount:amount}); // Log each row's data
+                    rowData.push({  Product_id: Product_id, unitprice: unitprice, quantity: quantity, totalprice: totalprice });
+                } else {
+                    console.warn('Row skipped due to insufficient cells:', row);
+                }
+            });
+            console.log('Data to be sent:', rowData); // Log the data to be sent
 
-                        rowData.push({ childName:childName, intime:intime,outtime:outtime,amount:amount, customerId:customerId ,rfid:rfid ,child_id:child_id});
-                    });
+// Send data to the controller via AJAX
+                        $.ajax({
+                            url: '{{ route('invoiceGenerator') }}', // Route name for Laravel
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            data: { data: JSON.stringify(rowData),
+                                discount: discount,
+                                fine: fine,
+                                total:total
 
-                    console.log('Data to be sent:', rowData); // Log the data to be sent
+                            },
+                            beforeSend: function() {
+                                // Show loader or perform any pre-AJAX actions
+                            },
+                            success: function(response) {
+                                console.log('Server response:', response);
+                              //  var totalAmount = response.total;
+                                //window.location.href = '{{ route('invoice.show') }}?totalAmount=' + totalAmount;
 
-                    // Send data to the controller via AJAX
-                    $.ajax({
-                        url: '{{ route('invoiceGenerator') }}', // Route name for Laravel
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        data: { data: JSON.stringify(rowData) },
-                        beforeSend: function() {
-                            // Show loader or perform any pre-AJAX actions
-                        },
-                        success: function(response) {
-                            console.log('Server response:', response);
-                            // Perform any actions after successful data submission
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error sending data:', error);
-                            console.log('Server response:', xhr.responseText); // Log the server response
-                            // Handle error if needed
-                        },
-                        complete: function() {
-                            // Hide loader or perform any post-AJAX actions
-                        }
-                    });
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error sending data:', error);
+                                console.log('Server response:', xhr.responseText); // Log the server response
+                                // Handle error if needed
+                            },
+                            complete: function() {
+                                // Hide loader or perform any post-AJAX actions
+                            }
+                        });
 
                 });
             }

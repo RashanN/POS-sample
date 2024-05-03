@@ -51,7 +51,7 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-       
+
         return view('customer.index', compact('customers'));
     }
     public function show()
@@ -66,7 +66,7 @@ class CustomerController extends Controller
     }
     public function update(Request $request, $id)
 {
-    
+
     // Validate the incoming request data
     $validatedData = $request->validate([
         'name' => 'required|string',
@@ -105,13 +105,11 @@ class CustomerController extends Controller
         return redirect()->route('customer.index')->with('success', 'Customer deleted successfully!');
     }
     public function search(Request $request)
-    {
-        $query = $request->input('query');
-
-        $customers = Customer::where('name', 'like', "%$query%")->get();
-
-        return view('partials.customer_list')->with('customers', $customers);
-    }
+{
+    $query = $request->input('query');
+    $customers = Customer::where('name', 'like', '%' . $query . '%')->get();
+    return response()->json($customers);
+}
 
 
     // Other methods...

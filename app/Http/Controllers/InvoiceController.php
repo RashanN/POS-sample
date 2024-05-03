@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Child;
+use App\Models\Order;
 use App\Models\Intime;
 use App\Models\Invoice;
 use App\Models\Outtime;
@@ -34,61 +35,6 @@ class InvoiceController extends Controller
 
         return view('invoice.show',['products' => $products,'amount'=>$amount]);
     }
-    public function generate(Request $request)
-    {
-        // $playedTime = $request->route('playedTime');
-        // $customerId = $request->route('customerId');
-        // $inTime = $request->route('inTime');
-
-        // list($hours, $minutes) = explode(':', $inTime);
-        // $inTimes = Carbon::createFromTime($hours, $minutes);
-        // $time = $inTimes->format('H:i');
-
-
-
-        $products = Product::all();
-        // $played_time_formatted = $playedTime . 'm';
-
-        $playtimesprice= Playtimesprice::all();
-
-        $defaultPrice = Playtimesprice::where('name', 'default')->value('price');
-        $a=Playtimesprice::where('name', 'A')->value('price');
-        $b=Playtimesprice::where('name', 'B')->value('price');
-        $c=Playtimesprice::where('name', 'C')->value('price');
-        $d=Playtimesprice::where('name', 'D')->value('price');
-    // Extract hours and minutes from the string
-    $matches = [];
-    //preg_match('/(\d+)h (\d+)m/', $played_time_formatted, $matches);
-
-    // Extract hours and minutes from the matches array
-    $hours = isset($matches[1]) ? (int) $matches[1] : 0;
-    $minutes = isset($matches[2]) ? (int) $matches[2] : 0;
-
-
-    $prices = [
-        ['start' => 0, 'end' => 60, 'price' => 0],  // First hour, free
-        ['start' => 60, 'end' => 300, 'price' => $a], // 5-15 minutes
-        ['start' => 300, 'end' => 900, 'price' => $b], // 15-30 minutes
-        ['start' => 900, 'end' => 1800, 'price' => $c], // 30-45 minutes
-        ['start' => 1800, 'end' => 3600, 'price' => $d], // 45-60 minutes
-    ];
-
-    // Initialize total price
-    $totalPrice = 0;
-
-    $additionalHours = max(0, $hours - 2);
-    $totalPrice += $defaultPrice;
-
-
-    if($minutes<5){
-        $totalPrice=$totalPrice;
-    }elseif($minutes>5 && $minutes<15){
-        $totalPrice+=($minutes*15);
-    }
-
-        return view('invoice.show',['products' => $products,'amount'=>$totalPrice]);
-
-    }
 
     public function getProductDetails(Request $request){
 
@@ -110,8 +56,8 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
         $child=Child::where('id',$childNames)->first();
         $intime = Intime::where('RFID', $rfid)->first();
         $outtime = Outtime::where('RFID', $rfid)->first();
-        if ($child === null) {
-            $child = [];
+        if ($childNames === null) {
+            $child = "[]";
         }
 
         if ($intime && $outtime) {
@@ -202,8 +148,6 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
                 $playtimeorder->save();
             }
         }
-
-
         return response()->json(['products' => $products, 'total' => $total]);
         // return redirect()->route('invoice.show')->with(['products' => $products, 'total' => $total]);
 
@@ -220,32 +164,46 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
     public function invoiceGenerator(Request $request){
 
 
-        $jsonData = $request->input('data');
-        (dd($jsonData));
-        $dataArray = json_decode($jsonData, true);
+        $jsonData = json_decode($request->input('data'), true);
+        $discount = $request->input('discount');
+        $fine = $request->input('fine');
+        $total = $request->input('total');
+        $date = Carbon::now()->toDateString();
 
-        if (!empty($dataArray)) {
-            foreach ($dataArray as $data) {
 
+        $invoice_id = Invoice::orderBy('id', 'desc')->first();
+        $lastInvoice = Invoice::orderBy('id', 'desc')->first();
+        $lastInvoiceId = $lastInvoice->id;
+
+        $invoice_id->discount = $discount;
+        $invoice_id->fine = $fine;
+        $invoice_id->total = $total;
+        $invoice_id->date =$date;
+
+        $invoice_id->save();
+
+        if (!empty($jsonData)) {
+            foreach ($jsonData as $data) {
+               $order=new Order; // Assuming your model name is Playtimeorder
+               $order->date =  $date;
+               $order->amount=$data['totalprice'];
+               $order->quantity=$data['quantity'];
+               $order->product_id=$data['Product_id'];
+               $order->invoice_id=$lastInvoiceId;
+
+
+                // Save the model to the database
+                $order->save();
+
+                $product = Product::find($data['Product_id']); // Assuming your model name is Product
+                if ($product) {
+                    $product->stock_level -= $data['quantity'];
+                    $product->save();
+                }
+            }
+        }
+        return response()->json(['message' => 'Orders created successfully']);
 
         }
-    }
-    // public function fetchIntimeOuttime(Request $request)
-    // {
-    // $RFID = $request->input('RFID');
-
-    // // Fetch in-time and out-time data based on RFID
-    // $intime = Intime::where('RFID', $RFID)->first();
-    // $outtime = Outtime::where('RFID', $RFID)->first();
-
-    // // Prepare the data to return
-    // $data = [
-    //     'intime' => $intime ? $intime->intime : '-',
-    //     'outtime' => $outtime ? $outtime->outtime : '-',
-    // ];
-
-    // return response()->json($data);
-    // }
-}
 }
 
