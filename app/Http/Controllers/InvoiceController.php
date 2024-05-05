@@ -144,6 +144,7 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
                 $playtimeorder->child_id = $data['child_id'];
                 $playtimeorder->invoice_id = $invoiceId;
 
+               // dd($playtimeorder);
                 // Save the model to the database
                 $playtimeorder->save();
             }
@@ -202,8 +203,35 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
                 }
             }
         }
-        return response()->json(['message' => 'Orders created successfully']);
+        return response()->json(['invoiceId'=> $lastInvoiceId]);
 
+        }
+        public function invoiceBill(Request $request){
+            //dd($request);
+            $invoiceId = $request->query('invoice');
+
+            $invoice = Invoice::find($invoiceId);
+            $products = Product::all();
+            //dd($invoiceId);
+            $invoiceID = $invoice->id;
+
+
+            $customerName = Customer::where('id', $invoice->customer_id)->value('name');
+
+           // $playtimeOrders = PlaytimeOrder::where('invoice_id', $invoiceID)->get();
+           $playtimeOrders = PlaytimeOrder::where('invoice_id', $invoiceID)
+           ->Join('child', 'playtimeorder.child_id', '=', 'child.id')
+           ->select('playtimeorder.*', 'child.name as child_name')
+           ->get();
+
+           $purchaseItems = Order::where('invoice_id', $invoiceID)
+                          ->leftJoin('product', 'order.product_id', '=', 'product.id')
+                          ->select('order.*', 'product.name as product_name')
+                          ->get();
+                         // dd( $purchaseItems);
+
+            //dd( $playtimeOrders);
+            return view('invoice.bill', ['invoice' => $invoice, 'products' => $products, 'playtimeOrders' => $playtimeOrders,'customerName'=>  $customerName,'purchaseItems'=>$purchaseItems]);
         }
 }
 

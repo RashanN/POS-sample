@@ -26,6 +26,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/invoice/bill', function () {
+    return view('invoice.bill');
+})->name('invoice.bill');
+
 Route::get('/invoice/show', function () {
     return view('invoice.show');
 })->name('invoice.show');
@@ -74,6 +78,7 @@ Route::post('playTimeOrder', [InvoiceController::class, 'playTimeOrder'])->name(
 Route::post('invoiceGenerator', [InvoiceController::class, 'invoiceGenerator'])->name('invoiceGenerator');
 // Route::get('/fetch-intime-outtime', [InvoiceController::class, 'fetchIntimeOuttime'])->name('fetch.intime.outtime');
 Route::get('invoice.show', [InvoiceController::class, 'invoiceShow'])->name('invoice.show');
+Route::get('invoice.bill', [InvoiceController::class, 'invoiceBill'])->name('invoice.bill');
 
 
 Route::post('/search/customers', [CustomerController::class, 'search'])->name('search.customers');

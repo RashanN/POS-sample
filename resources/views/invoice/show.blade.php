@@ -307,8 +307,8 @@
                             },
                             success: function(response) {
                                 console.log('Server response:', response);
-                              //  var totalAmount = response.total;
-                                //window.location.href = '{{ route('invoice.show') }}?totalAmount=' + totalAmount;
+                                var invoiceId = response.invoiceId;
+                                window.location.href = '{{ route('invoice.bill') }}?invoice=' + invoiceId;
 
                             },
                             error: function(xhr, status, error) {

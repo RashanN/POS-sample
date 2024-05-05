@@ -16,12 +16,12 @@ class CustomerController extends Controller
     }
     public function store(Request $request)
     {
-      //dd($request);
+    //   dd($request);
         $customer = new Customer;
         // Validate incoming request data
         $validatedData = $request->validate([
             'name' => 'required|string',
-            'contact' => 'required|numeric|max:10|min:10',
+            'contact' => 'required|string|max:10|min:10',
              'email' => 'nullable|email',
 
         ]);
@@ -36,7 +36,7 @@ class CustomerController extends Controller
             $customer->contact = $validatedData['contact'];
             $customer->email = $request->input('email');
 
-
+            //dd($customer);
           ($customer);
             // Save the customer
             $customer->save();

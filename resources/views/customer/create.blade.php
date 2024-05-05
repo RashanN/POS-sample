@@ -53,7 +53,7 @@
 
                     <div class="form-group">
                         <label for="contact_number">Contact Number: *</label>
-                        <input type="number" class="form-control" id="contact" name="contact" required >
+                        <input type="number" class="form-control" id="contact" name="contact" required  minlength="10" maxlength="10">
                     </div>
                     <button type="submit" class="btn btn-primary">Create Customer</button>
                 </form>
