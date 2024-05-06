@@ -16,7 +16,8 @@ class playtimeorder extends Model
         'outime',
         'amount',
         'customer_id',
-        'invoice_id'
+        'invoice_id',
+        'child_id'
 
     ];
 }

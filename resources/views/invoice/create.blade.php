@@ -189,12 +189,12 @@
             option.textContent = child.name;
             childNamesSelect.appendChild(option);
         });
-    } else {
-        var option = document.createElement("option");
-        option.value = "no child";
-        option.textContent = "No Child";
-        childNamesSelect.appendChild(option);
-    }
+        } else {
+            var option = document.createElement("option");
+            option.value = "no child";
+            option.textContent = "No Child";
+            childNamesSelect.appendChild(option);
+        }
     }
 
     document.getElementById('addBtn').addEventListener('click', function(event) {
@@ -205,7 +205,7 @@
              var childName = document.getElementById('childNames').value;
               console.log('SDSD',childName);
               var pricerange= document.getElementById('pricerange').value;
-          console.log('hghg',pricerange);
+             console.log('hghg',pricerange);
 
             $.ajax({
             url: '{{ route('get-time') }}',
@@ -241,13 +241,14 @@
 
     row.innerHTML = `
         <td class="font_color row_padding">${today}</td>
-        <td class="font_color row_padding" >${childData.name}</td>
+        <td class="font_color row_padding">${childData ? childData.name : 'null'}</td>
         <td class="font_color row_padding">${data.intime.intime}</td>
         <td class="font_color row_padding">${data.outtime.outtime}</td>
         <td class="font_color row_padding">${data.playedtime}</td>
         <td id="tot" class="font_color row_padding">${data.amountprice}</td>
 
     `;
+    var childId = childData ? childData.id : null;
     var tot = 0;
 
     document.querySelectorAll('#PlaytimeBody tr').forEach(function(row) {
@@ -291,10 +292,10 @@
         generateBtn.addEventListener('click', function(event) {
             event.preventDefault();
 
-            var customerId = document.getElementById("customer_id").value;
-            var rfid = document.getElementById('RFID').value;
-            var child_id = document.getElementById('childNames').value;
-            var total=document.getElementById('amount').value;
+            var customerId = document.getElementById("customer_id").value || null;
+            var rfid = document.getElementById('RFID').value || null;
+            var child_id = document.getElementById('childNames').value || null;
+            var total = document.getElementById('amount').value || null;
 
             // Gather data from the table
             var tableRows = document.querySelectorAll('#PlaytimeBody tr');
@@ -306,6 +307,11 @@
                     var intime = row.cells[2].textContent.trim();
                     var outtime = row.cells[3].textContent.trim();
                     var amount = row.cells[5].textContent.trim();
+
+                    if (childName == '') childName = null;
+                    if (intime == '') intime = null;
+                    if (outtime == '') outtime = null;
+                    if (amount == '') amount = null;
 
                     console.log('Row data:', { childName: childName, intime: intime, outtime: outtime, amount: amount, customerId: customerId, rfid: rfid, child_id: child_id }); // Log each row's data
 

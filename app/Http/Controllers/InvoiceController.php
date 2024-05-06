@@ -141,7 +141,9 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
                 $playtimeorder->outtime = $data['outtime'];
                 $playtimeorder->amount = $data['amount'];
                 $playtimeorder->customer_id = $data['customerId'];
-                $playtimeorder->child_id = $data['child_id'];
+                if ($data['child_id'] != 'no child') {
+                    $playtimeorder->child_id = $data['child_id'];
+                }
                 $playtimeorder->invoice_id = $invoiceId;
 
                // dd($playtimeorder);
@@ -219,10 +221,11 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
             $customerName = Customer::where('id', $invoice->customer_id)->value('name');
 
            // $playtimeOrders = PlaytimeOrder::where('invoice_id', $invoiceID)->get();
-           $playtimeOrders = PlaytimeOrder::where('invoice_id', $invoiceID)
-           ->Join('child', 'playtimeorder.child_id', '=', 'child.id')
+           $playtimeOrders = PlaytimeOrder::leftJoin('child', 'playtimeorder.child_id', '=', 'child.id')
+           ->where('playtimeorder.invoice_id', $invoiceID)
            ->select('playtimeorder.*', 'child.name as child_name')
            ->get();
+
 
            $purchaseItems = Order::where('invoice_id', $invoiceID)
                           ->leftJoin('product', 'order.product_id', '=', 'product.id')
