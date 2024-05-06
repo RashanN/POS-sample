@@ -1,115 +1,72 @@
 <x-app-layout>
-    {{-- <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot> --}}
-	@include('layouts.navigation')
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{asset('css/adminpanel.css')}}">
-	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-    <script>
-        var hamburger = document.querySelector(".hamburger");
-        var wrapper  = document.querySelector(".wrapper");
-        var backdrop = document.querySelector(".backdrop");
-
-        hamburger.addEventListener("click", function(){
-            wrapper.classList.add("active");
-        })
-
-        backdrop.addEventListener("click", function(){
-            wrapper.classList.remove("active");
-        })
-    </script>
+	{{-- <x-slot name="header">
+		<h2 class="font-semibold text-xl text-gray-800 leading-tight">
+			{{ __('Dashboard') }}
+		</h2>
+	</x-slot> --}}
+  @include('layouts.navigation')
+  
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <title>Document</title>
-</head>
-<body>
-
-    <div class="wrapper">
-		<div class="wrapper_inner">
-			<div class="vertical_wrap">
-			<div class="backdrop"></div>
-			<div class="vertical_bar">
-
-				<ul class="menu">
-					<li><a href="{{route('product_category.index')}}">
-						<span class="icon"><i class="fas fa-home"></i></span>
-						<span class="text">Product Category</span>
-					</a></li>
-					<li><a href="#" class="active">
-						<span class="icon"><i class="fas fa-file-alt"></i></span>
-						<span class="text">Dashboard</span>
-					</a></li>
-					<li><a href="{{ route('product.index') }}">
-						<span class="icon"><i class="fas fa-home"></i></span>
-						<span class="text">Products</span>
-					</a></li>
-					<li><a href="{{ route('product.create') }}">
-						<span class="icon"><i class="fas fa-cog"></i></span>
-						<span class="text">Add New Product  </span>
-					</a></li>
-                    <li><a href="">
-						<span class="icon"><i class="fas fa-cog"></i></span>
-						<span class="text">Total Income</span>
-					</a></li>
-                    <li><a href="{{ route('supplier.index') }}">
-						<span class="icon"><i class="fas fa-cog"></i></span>
-						<span class="text">Supplier</span>
-					</a></li>
-					<li><a href="{{ route('playtimeprices.index') }}">
-						<span class="icon"><i class="fas fa-cog"></i></span>
-						<span class="text">Playtime Prices</span>
-					</a></li>
-
-				</ul>
-
-
-			</div>
-		</div>
-		<div class="main_container">
-			<div class="top_bar">
-				<div class="hamburger">
-					<i class="fas fa-bars"></i>
-				</div>
-				<div class="logo">
-					 <span>POS SYSTEM</span>
-				</div>
-			</div>
-
-			<div class="container">
-				<div class="content">
-
-                    <div class="card text-dark bg-light mb-3" style="max-width: 30rem;">
-                        <div class="card-header"><strong> Total Sales </strong></div>
-                        <div class="card-body">
-                          <p class="card-title"></p>
-
-                        </div>
-                    </div>
-
-                    <div class="card text-dark bg-light mb-3" style="max-width: 30rem;">
-                        <div class="card-header"><strong> Total Customers</strong></div>
-                        <div class="card-body">
-                          <p class="card-title">{{$customerCount}}</p>
-
-                        </div>
-                    </div>
-
-						{{-- {{dd($coun t)}} --}}
-				</div>
-			</div>
-		</div>
-		</div>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	
+  </head>
+  <body>
+	<link rel="stylesheet" href="{{asset('css/panel.css')}}">
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-abcdef..." crossorigin="anonymous" />
+	
+	<aside>
+	  <p> Menu </p>
+	  <a href="{{route('product_category.index')}}">
+		<i class="fas fa-tasks" aria-hidden="true"></i>
+		Product Category
+	  </a>
+	  <a href="javascript:void(0)">
+		<i class="fa fa-laptop" aria-hidden="true"></i>
+		Dashboard
+	  </a>
+	  <a href="{{ route('product.index') }}">
+		<i class="fa fa-clone" aria-hidden="true"></i>
+		Products
+	  </a>
+	  <a href="{{ route('product.create') }}">
+		<i class="fas fa-plus-square" aria-hidden="true"></i>
+		Add New Product
+	  </a>
+	  <a href="{{ route('supplier.index') }}">
+		<i class="fas fa-user-plus" aria-hidden="true"></i>
+		Suppliers
+	  </a>
+	  <a href="{{ route('playtimeprices.index') }}">
+		<i class="fas fa-tags" aria-hidden="true"></i>
+		Play Time Price
+	  </a>
+	  
+	</aside>
+  
+	<div class="social">
+	  <a href="https://www.linkedin.com/in/florin-cornea-b5118057/" target="_blank">
+		<i class="fa fa-linkedin"></i>
+	  </a>
 	</div>
-</body>
-</html>
-</x-app-layout>
+  
+  
+  
+  
+  </body>
+  </html>
+  </x-app-layout>
+	{{-- <x-slot name="header">
+		<h2 class="font-semibold text-xl text-gray-800 leading-tight">
+			{{ __('Dashboard') }}
+		</h2>
+	</x-slot> --}}
+  
+  

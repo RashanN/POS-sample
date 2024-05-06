@@ -1,12 +1,12 @@
 <x-app-layout>
-    {{-- <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot> --}}
-    @include('layouts.navigation1')
+  {{-- <x-slot name="header">
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+          {{ __('Dashboard') }}
+      </h2>
+  </x-slot> --}}
+@include('layouts.navigation')
 
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -24,25 +24,29 @@
   
   <aside>
     <p> Menu </p>
-    <a href="{{ route('customer.index') }}">
+    <a href="{{route('product_category.index')}}">
       <i class="fas fa-tasks" aria-hidden="true"></i>
-      Customers
+      Product Category
     </a>
     <a href="javascript:void(0)">
       <i class="fa fa-laptop" aria-hidden="true"></i>
       Dashboard
     </a>
-    <a href="{{ route('child.index') }}">
+    <a href="{{ route('product.index') }}">
       <i class="fa fa-clone" aria-hidden="true"></i>
-      Child
+      Products
     </a>
-    <a href="{{ route('invoice.create') }}">
+    <a href="{{ route('product.create') }}">
       <i class="fas fa-plus-square" aria-hidden="true"></i>
-      Invoice
+      Add New Product
     </a>
-    <a href="">
+    <a href="{{ route('supplier.index') }}">
       <i class="fas fa-user-plus" aria-hidden="true"></i>
-      Check Stock
+      Suppliers
+    </a>
+    <a href="{{ route('playtimeprices.index') }}">
+      <i class="fas fa-tags" aria-hidden="true"></i>
+      Play Time Price
     </a>
     
   </aside>
@@ -58,5 +62,10 @@
 
 </body>
 </html>
-
 </x-app-layout>
+  {{-- <x-slot name="header">
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+          {{ __('Dashboard') }}
+      </h2>
+  </x-slot> --}}
+

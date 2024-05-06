@@ -26,6 +26,12 @@
             margin-top: 50px;
 
         }
+        .col-md-6 {
+        margin-bottom: 5px;
+        }
+        .producttable{
+           margin-top: 10px;
+        }
     </style>
 
 <div class="container">
@@ -98,28 +104,41 @@
                     <div>
                     <div class="row">
                         <div class="col-md-6">
-                            <h4>Amount</h4>
+                            <h6>Amount</h6>
                         </div>
                         <div class="col-md-6">
                             <input type="text" name="amount" id="amount"  class="form-control input-with-border" >
                         </div>
                         <div class="col-md-6">
-                            <h4>Discount</h4>
+                            <h6>Discount</h6>
                         </div>
                         <div class="col-md-6">
                             <input type="text" name="discount"  class="form-control input-with-border" id="discount" value="0.00">
                         </div>
                         <div class="col-md-6">
-                            <h4>Fine Payment</h4>
+                            <h6>Fine Payment</h6>
                         </div>
                         <div class="col-md-6">
                             <input type="text" name="fine"  class="form-control input-with-border" id="fine" value="0.00">
                         </div>
                         <div class="col-md-6">
-                            <h4>Total</h4>
+                            <h6>Total</h6>
                         </div>
                         <div class="col-md-6">
                             <input type="text" name="total" id="total" class="form-control input-with-border" >
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Cash</h6>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="cash" id="cash" class="form-control input-with-border">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Balance</h6>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="balance" id="balance" class="form-control input-with-border" readonly>
                         </div>
                     </div>
                 </div>
@@ -324,5 +343,21 @@
                 });
             }
         });
+        $(document).ready(function () {
+    // Function to calculate and update balance
+    function updateBalance() {
+        var total = parseFloat($('#total').val()) || 0;
+        var cash = parseFloat($('#cash').val()) || 0;
+        var balance = cash - total;
+        $('#balance').val(balance.toFixed(2)); // Update balance field
+    }
+
+    // Update balance when Enter key is pressed
+    $('#total, #cash').on('keypress', function (e) {
+        if (e.which === 13) { // Check if Enter key is pressed
+            updateBalance();
+        }
+    });
+});
     </script>
 </x-app-layout>
