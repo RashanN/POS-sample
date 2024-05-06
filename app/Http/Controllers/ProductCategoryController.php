@@ -27,7 +27,7 @@ class ProductCategoryController extends Controller
         ]);
 
         // Redirect back to the index page with success message
-        return redirect()->route('productcategory/index')->with('success', 'Product category created successfully!');
+        return redirect()->route('product_category.index')->with('success', 'Product category created successfully!');
     }
     public function index()
     {

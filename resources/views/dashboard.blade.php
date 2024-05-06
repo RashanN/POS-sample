@@ -39,7 +39,7 @@
                 <div class="vertical_wrap">
                 <div class="backdrop"></div>
                 <div class="vertical_bar">
-
+                  
                     <ul class="menu" >
                         <li><a href="{{ route('customer.index') }}">
                             <span class="icon"><i class="fas fa-home"></i></span>

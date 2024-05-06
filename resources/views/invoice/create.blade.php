@@ -55,7 +55,10 @@
                                         <div style="display: flex; align-items: center;">
                                             <input type="text" id="searchBox" placeholder="Search customers...">
                                             <input type="hidden" id="customer_id"> <!-- Hidden field to store the selected customer ID -->
-                                            <a href="{{ route('customer.create') }}" class="btn btn-secondary" style="margin-left: 10px;">+</a>
+                                            <a href="{{ route('customer.create') }}" class="btn btn-secondary" style="margin-left: 10px;" target="_blank">+</a>
+
+
+                                            
                                         </div>
 
 
@@ -93,7 +96,7 @@
 
                                             <div class="col">
                                                 <a href="#" id="addBtn" class="btn btn-success">Add</a>
-                                                <a href="{{ route('child.create') }}" class="btn btn-secondary">+</a>
+                                                <a href="{{ route('child.create') }}" class="btn btn-secondary"   target="_blank">+</a>
                                             </div>
 
                                         </div>
@@ -381,6 +384,33 @@
             $('#customer_id').val(selectedCustomer.data('id')); // Set the selected customer's ID in the hidden field
             $('#customerList').empty(); // Clear the search results
         });
+    });
+
+
+    function openCreateCustomerModal() {
+        // Fetch the content of the customer create blade using AJAX
+        $.ajax({
+            url: "{{ route('customer.create') }}",
+            success: function(response) {
+                // Create a Bootstrap modal and append the blade content to it
+                var modal = $('<div class="modal fade" tabindex="-1" role="dialog">' +
+                                '<div class="modal-dialog" role="document">' +
+                                    '<div class="modal-content">' +
+                                        '<div class="modal-body">' + response + '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>');
+
+                // Append the modal to the body and show it
+                $('body').append(modal);
+                modal.modal('show');
+            }
+        });
+    }
+
+    // Event listener for the button click
+    $(document).on('click', '#createCustomerButton', function() {
+        openCreateCustomerModal();
     });
     /////////////////http://127.0.0.1:8000/invoice/generate/1h%2056m/2/11:52
 

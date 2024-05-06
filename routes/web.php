@@ -26,13 +26,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/invoice/bill', function () {
-    return view('invoice.bill');
-})->name('invoice.bill');
+// Route::get('/invoice/bill', function () {
+//     return view('invoice.bill');
+// })->name('invoice.bill');
 
-Route::get('/invoice/show', function () {
-    return view('invoice.show');
-})->name('invoice.show');
+// Route::get('/invoice/show', function () {
+//     return view('invoice.show');
+// })->name('invoice.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -47,6 +47,8 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get('admin/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
+Route::get('admin/dashboard1', [HomeController::class, 'index1'])->name('admin.dashboard1');
+Route::get('/dashboard', [HomeController::class, 'paneldata'])->name('dashboard');
 
 //Product Routes
 Route::get('product/index', [ProductController::class, 'index'])->name('product.index');
@@ -76,7 +78,6 @@ Route::get('/fetch-children', [ChildController::class, 'fetchChildren'])->name('
 Route::get('get-time', [InvoiceController::class, 'getTime'])->name('get-time');
 Route::post('playTimeOrder', [InvoiceController::class, 'playTimeOrder'])->name('playTimeOrder');
 Route::post('invoiceGenerator', [InvoiceController::class, 'invoiceGenerator'])->name('invoiceGenerator');
-// Route::get('/fetch-intime-outtime', [InvoiceController::class, 'fetchIntimeOuttime'])->name('fetch.intime.outtime');
 Route::get('invoice.show', [InvoiceController::class, 'invoiceShow'])->name('invoice.show');
 Route::get('invoice.bill', [InvoiceController::class, 'invoiceBill'])->name('invoice.bill');
 

@@ -17,4 +17,20 @@ class HomeController extends Controller
 
         
     }
+    public function index1()
+    {
+        $customerCount = Customer::count();
+
+        
+        return view('admin.dashboard1', ['customerCount' => $customerCount]);
+
+        
+    }
+    public function paneldata(){
+
+        $customerCount = Customer::count();
+
+        
+        return view('dashboard', ['customerCount' => $customerCount]);
+    }
 }
