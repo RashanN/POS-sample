@@ -7,111 +7,56 @@
     @include('layouts.navigation1')
 
     <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="stylesheet" href="{{asset('css/adminpanel.css')}}">
-        <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-        <script>
-            var hamburger = document.querySelector(".hamburger");
-            var wrapper  = document.querySelector(".wrapper");
-            var backdrop = document.querySelector(".backdrop");
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+</head>
+<body>
+  <link rel="stylesheet" href="{{asset('css/panel.css')}}">
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-abcdef..." crossorigin="anonymous" />
+  
+  <aside>
+    <p> Menu </p>
+    <a href="{{ route('customer.index') }}">
+      <i class="fas fa-tasks" aria-hidden="true"></i>
+      Customers
+    </a>
+    <a href="javascript:void(0)">
+      <i class="fa fa-laptop" aria-hidden="true"></i>
+      Dashboard
+    </a>
+    <a href="{{ route('child.index') }}">
+      <i class="fa fa-clone" aria-hidden="true"></i>
+      Child
+    </a>
+    <a href="{{ route('invoice.create') }}">
+      <i class="fas fa-plus-square" aria-hidden="true"></i>
+      Invoice
+    </a>
+    <a href="">
+      <i class="fas fa-user-plus" aria-hidden="true"></i>
+      Check Stock
+    </a>
+    
+  </aside>
 
-            hamburger.addEventListener("click", function(){
-                wrapper.classList.add("active");
-            })
-
-            backdrop.addEventListener("click", function(){
-                wrapper.classList.remove("active");
-            })
-        </script>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-        <title>Document</title>
-    </head>
-    <body>
-
-        <div class="wrapper">
-            <div class="wrapper_inner">
-                <div class="vertical_wrap">
-                <div class="backdrop"></div>
-                <div class="vertical_bar">
-                  
-                    <ul class="menu" >
-                        <li><a href="{{ route('customer.index') }}">
-                            <span class="icon"><i class="fas fa-home"></i></span>
-                            <span class="text">Customers</span>
-                        </a></li>
-                        <li><a href="#" class="active">
-                            <span class="icon"><i class="fas fa-file-alt"></i></span>
-                            <span class="text">Dashboard</span>
-                        </a></li>
-                        <li><a href="{{ route('child.index') }}">
-                            <span class="icon"><i class="fas fa-home"></i></span>
-                            <span class="text">Child</span>
-                        </a></li>
-                        {{-- <li><a href="{{route('product_category.index')}}">
-                            <span class="icon"><i class="fas fa-home"></i></span>
-                            <span class="text">Product Category</span>
-                        </a></li> --}}
-                        <li><a href="{{ route('invoice.create') }}">
-                            <span class="icon"><i class="fas fa-chart-pie"></i></span>
-                            <span class="text">Invoice</span>
-                        </a></li>
-                        <li><a href="{{route('product.create')}}">
-                            <span class="icon"><i class="fas fa-cog"></i></span>
-                            <span class="text">Add New Product  </span>
-                        </a></li>
-                       
-                        <li><a href="{{ route('supplier.index') }}">
-                            <span class="icon"><i class="fas fa-cog"></i></span>
-                            <span class="text">Check Stock</span>
-                        </a></li>
-                       
-                    </ul>
+  <div class="social">
+    <a href="https://www.linkedin.com/in/florin-cornea-b5118057/" target="_blank">
+      <i class="fa fa-linkedin"></i>
+    </a>
+  </div>
 
 
-                </div>
-            </div>
-            <div class="main_container">
-                <div class="top_bar">
-                    <div class="hamburger">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                    <div class="logo">
-                         <span>POS SYSTEM</span>
-                    </div>
-                </div>
 
-                <div class="container">
-                    <div class="content">
 
-                        <div class="card text-dark bg-light mb-3" style="max-width: 30rem;">
-                            <div class="card-header"><strong> Total Sales </strong></div>
-                            <div class="card-body">
-                              <p class="card-title"></p>
-
-                            </div>
-                        </div>
-
-                        <div class="card text-dark bg-light mb-3" style="max-width: 30rem;">
-                            <div class="card-header"><strong> Total Customers</strong></div>
-                            <div class="card-body">
-                              <p class="card-title"></p>
-
-                            </div>
-                        </div>
-
-                            {{-- {{dd($coun t)}} --}}
-                    </div>
-                </div>
-            </div>
-            </div>
-        </div>
-    </body>
-    </html>
+</body>
+</html>
 
 </x-app-layout>
