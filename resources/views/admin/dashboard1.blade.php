@@ -1,68 +1,147 @@
-<x-app-layout>
+{{-- <x-app-layout> --}}
   {{-- <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
           {{ __('Dashboard') }}
       </h2>
   </x-slot> --}}
-@include('layouts.navigation')
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  
-</head>
-<body>
-  <link rel="stylesheet" href="{{asset('css/panel.css')}}">
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-abcdef..." crossorigin="anonymous" />
-  
-  <aside>
-    <p> Menu </p>
-    <a href="{{route('product_category.index')}}">
-      <i class="fas fa-tasks" aria-hidden="true"></i>
-      Product Category
-    </a>
-    <a href="javascript:void(0)">
-      <i class="fa fa-laptop" aria-hidden="true"></i>
-      Dashboard
-    </a>
-    <a href="{{ route('product.index') }}">
-      <i class="fa fa-clone" aria-hidden="true"></i>
-      Products
-    </a>
-    <a href="{{ route('product.create') }}">
-      <i class="fas fa-plus-square" aria-hidden="true"></i>
-      Add New Product
-    </a>
-    <a href="{{ route('supplier.index') }}">
-      <i class="fas fa-user-plus" aria-hidden="true"></i>
-      Suppliers
-    </a>
-    <a href="{{ route('playtimeprices.index') }}">
-      <i class="fas fa-tags" aria-hidden="true"></i>
-      Play Time Price
-    </a>
-    
-  </aside>
-
-  <div class="social">
-    <a href="https://www.linkedin.com/in/florin-cornea-b5118057/" target="_blank">
-      <i class="fa fa-linkedin"></i>
-    </a>
-  </div>
+  @extends('layouts.land')
 
 
+  @section('content')
+  <section>
+  <link rel="stylesheet" href="{{asset('css/panel1.css')}}">
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('font/font-awesome.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('js/bootstrap.bundle.min.js') }}">
+  <script src="{{ asset('js/nav.js') }}"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-abcdef..." crossorigin="anonymous" />
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+          
+                  <body>
+                    <div class="sidebar">
+                    <header>My App</header>
+                  <ul>
+                <li><a href="#"><i class="fas fa-qrcode"></i>Dashboard</a></li>
+                <li><a href="{{route('product_category.index')}}"><i class="fas fa-link"></i>Category</a></li>
+                @if($usertype === 'admin')
+                     <li><a href="{{ route('product.index') }}"><i class="fas fa-stream"></i>Products</a></li>
+               @endif
+                 {{-- <li><a href="{{ route('product.index') }}"><i class="fas fa-stream"></i>Products</a></li> --}}
+                <li><a href="{{ route('supplier.index') }}"><i class="fas fa-calendar-week"></i>Suppliers</a></li>
+                <li><a href="{{ route('playtimeprices.index') }}"><i class="far fa-question-circle"></i>PlayTime Price</a></li>
+                <li><a href="#"><i class="fas fa-sliders-h"></i>Invoices</a></li>
+                <li><a href="#"><i class="far fa-envelope"></i>Contact</a></li>
+                </ul>
+                </div>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <div class="cardset">
+                  <div class="container mt-4">
+                    <div class="row">
+                      <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">Number of Customers</h5>
+                            <p class="card-text">{{($customerCount)}}</p>
+                            <a href="#" class="btn btn-primary">View Customers</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">Number of Children</h5>
+                            <p class="card-text">{{($childrenCount)}}</p>
+                            <a href="#" class="btn btn-primary">View Children</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">Number of Invoices</h5>
+                            <p class="card-text">{{($invoiceCount)}}</p>
+                            <a href="#" class="btn btn-primary">View Invoices</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">Income For This Month</h5>
+                            <p class="card-text">{{($totalMonth)}}</p>
+                            <a href="#" class="btn btn-primary">View Income Details</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                
+
+                <div class="container mt-4">
+                  <!-- Your existing cardset -->
+                  <div class="row">
+                    <div class="col-md-6">
+                      <canvas id="incomeChart" width="300px" height="100px"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                    
+                    </div>
+                </div>
+                </div>
+              </div>
+            </section>
+          </body>
+      </html>
+      <script>
+        // Get data for the chart
+        var childrenCount = <?php echo json_encode($childrenCount); ?>;
+        console.log('count',childrenCount);
+        var totalMonth = <?php echo json_encode($totalMonth); ?>;
+        console.log(totalMonth)
+        // Chart.js configuration
+        var labels = Array.isArray(childrenCount) ? childrenCount.map(String) : [];
+
+    // Chart.js configuration
+    var ctx = document.getElementById('incomeChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: <?php echo json_encode($dataSet['labels']); ?>,
+        datasets: [{
+            label: 'Total Income',
+            data: <?php echo json_encode($dataSet['data']); ?>,
+            backgroundColor: 'rgba(4,35,49, 0.2)',
+            borderColor: 'rgba(4,35,49 , 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Date'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Number Of Sales'
+                }
+            }
+        }
+    }
+});
+</script>
+      
 
 
-</body>
-</html>
-</x-app-layout>
+
+   
+@endsection
   {{-- <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
           {{ __('Dashboard') }}

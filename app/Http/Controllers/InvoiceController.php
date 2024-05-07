@@ -236,5 +236,15 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
             //dd( $playtimeOrders);
             return view('invoice.bill', ['invoice' => $invoice, 'products' => $products, 'playtimeOrders' => $playtimeOrders,'customerName'=>  $customerName,'purchaseItems'=>$purchaseItems]);
         }
+        public function index1()
+        {
+            $invoices = DB::table('invoice')
+                    ->join('customer', 'invoice.customer_id', '=', 'customer.id')
+                    ->select('invoice.*', 'customer.name as customer_name')
+                    ->get();
+
+            //dd( $invoices);
+            return view('invoice.index', compact('invoices'));
+        }
 }
 

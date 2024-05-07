@@ -22,7 +22,7 @@
 
 
 
-    <title>Play On</title>
+    <title>House Of Play</title>
 </head>
 
 <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="70">
@@ -79,18 +79,6 @@
                      <!-- <li class="nav-item">
                         <a class="nav-link" href="#reviews">Reviews</a>
                     </li> -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact Us</a>
-                    </li>
-
-
-
-
-                    <li class="nav-item">
-
-
-
-                    </li>
                 </ul>
 
                 <!-- <a href="login.html" data-bs-toggle="modal" data-bs-target=""

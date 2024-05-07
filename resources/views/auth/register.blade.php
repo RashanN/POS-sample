@@ -18,7 +18,7 @@
         <div class="mt-4">
             <x-input-label for="usertype" :value="__('User Type')" />
             <select id="usertype" name="usertype" class="block mt-1 w-full">
-                <option value="user">User</option>
+                <option value="user">user</option>
                 <option value="admin">admin</option>
                 <!-- Add other user types as needed -->
             </select>

@@ -5,13 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
     <style>
+       @media print {
+            /* Adjustments for printing */
+            body {
+                margin: 0;
+                padding: 10px;
+            }
+            .container {
+                width: 80mm; /* Set the width for the printer */
+                margin: 0 auto;
+            }
+            .header {
+                margin-bottom: 10px;
+            }
+            .table th, .table td {
+                padding: 4px;
+                font-size: 10px; /* Adjust font size for table cells */
+            }
+            .total-section {
+                margin-top: 10px;
+            }
+            .no-print {
+                display: none; /* Hide elements not necessary for print */
+            }
+        }
+        /* General styling */
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
         }
         .container {
-            max-width: 800px;
+            max-width: 800px; /* Set the maximum width for regular view */
             margin: 0 auto;
         }
         .header {
@@ -22,10 +45,6 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-        }
-        .table th, .table td {
-            border: 1px solid #000;
-            padding: 8px;
         }
         .table th {
             background-color: #f2f2f2;
