@@ -7,16 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="link.png">
 
-    <!-- Bootstrap CSS -->
-    {{-- <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}"> --}}
-
-    {{-- <link rel="stylesheet" href="{{asset('css/owl.theme.default.min.css')}}"> --}}
-
-    {{-- <link href='{{asset('https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css')}}' rel='stylesheet'> --}}
-
-    {{-- <link rel="stylesheet" href="{{asset('css/style.css')}}"> --}}
-
-    {{-- <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}"> --}}
     @yield('style')
 
 
@@ -27,20 +17,6 @@
 
 <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="70">
 
-
-    <!-- TOP NAV -->
-    {{-- <div class="top-nav" id="home">
-        <div class="container">
-            <div class="row justify-content-between">
-                <div class="col-auto">
-                    <p> <i class='bx bxs-envelope'></i> pasindurashan200@gmail.com</p>
-                    <p> <i class='bx bxs-phone-call'></i>071 61 62 540</p>
-                </div>
-
-            </div>
-        </div>
-    </div> --}}
-
     <!-- BOTTOM NAV -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
 
@@ -50,39 +26,14 @@
 
             <a class="navbar-brand" href="{{route('admin.dashboard')}}">House Of Play </a>
 
-
-            <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button> -->
-
-
-
-
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-
-
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" href="">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#news">News & Updates</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#SportClub">Sports Club</a>
-                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('admin.dashboard')}}">Admin Panel</a>
                     </li>
 
-                     <!-- <li class="nav-item">
-                        <a class="nav-link" href="#reviews">Reviews</a>
-                    </li> -->
+                  
                 </ul>
-
-                <!-- <a href="login.html" data-bs-toggle="modal" data-bs-target=""
-                    class="btn btn-brand ms-lg-3">Log In</a> -->
 
                 @guest
                     @if (Route::has('login'))

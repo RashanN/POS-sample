@@ -41,6 +41,7 @@
                                 <th>Discount</th>
                                 <th>Fine</th>
                                 <th>Customer Name</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,6 +53,8 @@
                                 <td>{{ $invoice->discount }}</td>
                                 <td>{{ $invoice->fine }}</td>
                                 <td>{{ $invoice->customer_name }}</td> 
+                                <td><a href="{{ route('invoice.preview', $invoice->id) }}" class="btn btn-primary">Show</a></td>
+                                
                             </tr>
                             @endforeach
                         </tbody>

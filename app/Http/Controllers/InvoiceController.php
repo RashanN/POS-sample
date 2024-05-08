@@ -246,5 +246,16 @@ return response()->json(['quantity'=>$quantity, 'products'=>$products]);
             //dd( $invoices);
             return view('invoice.index', compact('invoices'));
         }
+        public function invoicePreview( Request $request)
+        {
+            dd($request);
+            $invoiceId = $request->query('invoice');
+            dd( $invoiceId);
+        }
+        public function show($id)
+            {
+                $invoice = Invoice::findOrFail($id);
+                return view('invoice.index', compact('invoice'));
+            }
 }
 

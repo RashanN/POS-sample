@@ -22,6 +22,9 @@
         .container {
             margin-top: 50px;
         }
+        .error-message {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -52,8 +55,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="contact_number">Contact Number: *</label>
-                        <input type="number" class="form-control" id="contact" name="contact" required  minlength="10" maxlength="10">
+                        <label for="contact_number">Contact Number: </label>
+                        <input type="number" class="form-control" id="contact" name="contact" >
+                        <div id="error-message" class="error-message"></div>
                     </div>
                     <button type="submit" class="btn btn-primary">Create Customer</button>
                 </form>
@@ -63,6 +67,26 @@
 
     <!-- Bootstrap JS (optional) -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        var contactInput = document.getElementById("contact");
+        var errorElement = document.getElementById("error-message");
+
+        contactInput.addEventListener("input", function() {
+            var contactValue = this.value;
+            if (contactValue.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+
+        contactInput.addEventListener("keydown", function(event) {
+            if (this.value.length >= 10 && event.keyCode !== 8 && event.keyCode !== 46) {
+                event.preventDefault();
+                errorElement.textContent = "Maximum 10 digits allowed.";
+            } else {
+                errorElement.textContent = "";
+            }
+        });
+    </script>
 </body>
 </html>
 </x-app-layout>

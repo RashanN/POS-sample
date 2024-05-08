@@ -53,6 +53,13 @@
             <label for="dob">Date of Birth:</label>
             <input type="date" class="form-control" id="dob" name="dob" value="{{ $child->DOB }}" required>
         </div>
+        <div class="form-group">
+            <label for="gender">Gender:</label>
+            <select class="form-control" id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
 
         <div class="form-group">
             <label for="school">School:</label>
@@ -61,6 +68,7 @@
         <div class="form-group">
             <label for="relationship">Relationship to Parent:</label>
             <input type="text" class="form-control" id="relationship" name="relationship" value="{{$child->relationship}}">
+            
         </div>
 
         <button type="submit" class="btn btn-primary">Update</button>

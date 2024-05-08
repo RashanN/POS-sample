@@ -41,7 +41,7 @@ class HomeController extends Controller
                                         $dataSet['labels'][] = date('F j', strtotime($day)); // Format date as "Month Day"
                                         $dataSet['data'][] = $invoiceCount;
                                     }
-        return view('admin.dashboard1', ['customerCount' => $customerCount,'childrenCount' => $childrenCount,'invoiceCount' => $invoiceCount,'totalMonth' => $totalMonth,'usertype' => $usertype,'dataSet' => $dataSet]);
+        return view('admin.dashboard', ['customerCount' => $customerCount,'childrenCount' => $childrenCount,'invoiceCount' => $invoiceCount,'totalMonth' => $totalMonth,'usertype' => $usertype,'dataSet' => $dataSet]);
 
 
         

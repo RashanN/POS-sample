@@ -363,6 +363,7 @@
        $(document).ready(function() {
         $('#searchBox').keyup(function() {
             var query = $(this).val();
+            console.log(query);
             if(query != '') {
                 $.ajax({
                     url: "{{ route('search.customers') }}",

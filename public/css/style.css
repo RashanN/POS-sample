@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap');
 
-:root {
+/* :root {
     --brand: #089442;
     --dark: #ff0000;
     --body: #000000;
     --border: rgba(0,0,0,0.08);
     --shadow: 0px 6px 30px rgba(0, 0, 0, 0.08);
 
-}
+} */
 
 body {
     font-family: "Barlow", sans-serif;
@@ -33,7 +33,7 @@ img {
 
 a {
     color: var(--dark);
-    transition: all 0.4s ease;
+    /* transition: all 0.4s ease; */
     font-weight: 500;
 }
 
@@ -51,7 +51,7 @@ section {
 }
 
 
-.hero-slider .owl-prev,
+/* .hero-slider .owl-prev,
 .hero-slider .owl-next{
     background-color: rgba(255, 255, 255, 0.3) !important;
     width: 60px !important;
@@ -86,11 +86,11 @@ section {
 
 .owl-dot.active span{
     background-color: var(--brand) !important;
-}
+} */
 
 
  /* slide */
- .slide {
+ /* .slide {
      min-height: 100vh;
      display: flex;
      align-items: center;
@@ -116,7 +116,7 @@ section {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-}
+} */
 
 /* .slide .display-3 {
     text-transform: uppercase;
@@ -178,7 +178,7 @@ section {
     padding: 8px 26px;
 }
 
-.btn-brand {
+/* .btn-brand {
     border-color: var(--brand);
     background-color: var(--brand);
     color: #fff;
@@ -281,9 +281,9 @@ text-align: center;}
     position: relative;
     z-index: 2;
     overflow: hidden;
-}
+} */
 
-.team-member .overlay {
+/* .team-member .overlay {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -401,18 +401,8 @@ text-align: center;}
     border-radius: 100px;
     text-decoration: none;
     color: #fff;
-}
+} */
 
-.blog-post h5 {
-    margin-top: 12px;
-    margin-bottom: 12px;
-}
-
-.blog-post small {
-    text-transform: uppercase;
-    color: var(--brand);
-    text-decoration: underline;
-}
 
 footer {
     background: linear-gradient(0deg, rgba(8, 32, 50, 0.9), rgba(8, 32, 50, 0.9)), url(../image/offer1.jpg), #082032;;

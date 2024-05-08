@@ -17,36 +17,37 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
     //   dd($request);
+    $customer = new Customer;
+    // Validate incoming request data
+    $validatedData = $request->validate([
+        'name' => 'required|string',
+        'contact' => 'nullable|string|max:10|min:10',
+         'email' => 'nullable|email',
+
+    ]);
+   ( $validatedData);
+    try {
+        // Create a new Customer instance
+
         $customer = new Customer;
-        // Validate incoming request data
-        $validatedData = $request->validate([
-            'name' => 'required|string',
-            'contact' => 'required|string|max:10|min:10',
-             'email' => 'nullable|email',
 
-        ]);
-       ( $validatedData);
-        try {
-            // Create a new Customer instance
+        // Assign validated data to the customer attributes
+        $customer->name = $validatedData['name'];
+        $customer->contact = $validatedData['contact'];
+        $customer->email = $request->input('email');
 
-            $customer = new Customer;
-
-            // Assign validated data to the customer attributes
-            $customer->name = $validatedData['name'];
-            $customer->contact = $validatedData['contact'];
-            $customer->email = $request->input('email');
-
-            //dd($customer);
-          ($customer);
-            // Save the customer
-            $customer->save();
-
-            // Redirect back to the form with a success message
-            return redirect()->route('customer.create')->with('success', 'Customer created successfully!');
-        } catch (\Exception $e) {
-            // If an error occurs during customer creation, redirect back with an error message
-            return redirect()->route('customer.create')->with('error', 'Failed to create customer. Please try again.');
-        }
+            try {
+                $customer->save();
+                
+            } catch (\Exception $e) {
+            
+            }
+        // Redirect back to the form with a success message
+        return redirect()->route('customer.index')->with('success', 'Customer created successfully!');
+    } catch (\Exception $e) {
+        // If an error occurs during customer creation, redirect back with an error message
+        return redirect()->route('customer.create')->with('error', 'error', $e->getMessage());
+    }
     }
     public function index()
     {
@@ -70,7 +71,7 @@ class CustomerController extends Controller
     // Validate the incoming request data
     $validatedData = $request->validate([
         'name' => 'required|string',
-        'contact' => 'required|string',
+        'contact' => 'nullable|string',
         'email' => 'nullable|email',
     ]);
 
@@ -85,7 +86,7 @@ class CustomerController extends Controller
         $customer = $customer->fresh();
 
         // Redirect back to the edit form with a success message
-        return redirect()->route('customer.edit', $customer->id)->with('success', 'Customer updated successfully!');
+        return redirect()->route('customer.index', $customer->id)->with('success', 'Customer updated successfully!');
     } catch (\Exception $e) {
         // If an error occurs, log the error and redirect back to the edit form with an error message
         Log::error('Error updating customer: ' . $e->getMessage());

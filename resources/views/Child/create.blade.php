@@ -46,13 +46,17 @@
                                     <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
+                            
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <ul id="customerList"></ul>
                         </div>
                         <div class="form-group">
-                            <label for="name">Child Name</label>
+                            <label for="name">Child Name *</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="form-group">
-                            <label for="dob">Date of Birth:</label>
+                            <label for="dob">Date of Birth *</label>
                             <input type="date" class="form-control" id="dob" name="dob" required>
                         </div>
                         <div class="form-group">
@@ -69,7 +73,14 @@
                         </div>
                         <div class="form-group">
                             <label for="relationship">Relationship to Parent:</label>
-                            <input type="text" class="form-control" id="relationship" name="relationship">
+                            <select class="form-control" id="relationship" name="relationship" >
+                                <option value="Father">Father</option>
+                                <option value="Mother">Mother</option>
+                                <option value="Uncle">Uncle</option>
+                                <option value="Aunty">Aunty</option>
+                                <option value="Grand Parent">Grand Parent</option>
+                            </select>
+                            
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
@@ -78,5 +89,35 @@
         </div>
     </div>
 </div>
+<script>
+     // search for customer
+     $(document).ready(function() {
+        $('#searchBox').keyup(function() {
+            var query = $(this).val();
+            console.log(query);
+            if(query != '') {
+                $.ajax({
+                    url: "{{ route('search.customers') }}",
+                    method: "POST",
+                    data: {query: query, "_token": "{{ csrf_token() }}"},
+                    success: function(data) {
+                        $('#customerList').empty();
+                        $.each(data, function(key, customer) {
+                            $('#customerList').append('<li class="customer" data-id="' + customer.id + '">' + customer.name + '</li>');
+                        });
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '.customer', function() {
+            var selectedCustomer = $(this);
+            $('#searchBox').val(selectedCustomer.text());
+            $('#customer_id').val(selectedCustomer.data('id')); // Set the selected customer's ID in the hidden field
+            $('#customerList').empty(); // Clear the search results
+        });
+    });
+
+</script>
 
 </x-app-layout>

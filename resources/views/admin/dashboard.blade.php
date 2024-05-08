@@ -37,7 +37,7 @@
                  {{-- <li><a href="{{ route('product.index') }}"><i class="fas fa-stream"></i>Products</a></li> --}}
                 <li><a href="{{ route('supplier.index') }}"><i class="fas fa-calendar-week"></i>Suppliers</a></li>
                 <li><a href="{{ route('playtimeprices.index') }}"><i class="far fa-question-circle"></i>PlayTime Price</a></li>
-
+                <li><a href="{{ route('playtimeprices.index') }}"><i class="far fa-question-circle"></i>All Invoices</a></li>
                 @endif
                 
                 
@@ -70,7 +70,7 @@
                           <div class="card-body">
                             <h5 class="card-title">Number of Invoices</h5>
                             <p class="card-text">{{($invoiceCount)}}</p>
-                            <a href="#" class="btn btn-primary">View Invoices</a>
+                            <a href="{{ route('invoice.index') }}" class="btn btn-primary">View Invoices</a>
                           </div>
                         </div>
                       </div>

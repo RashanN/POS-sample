@@ -29,7 +29,7 @@ class ChildController extends Controller
             'relationship' => 'nullable|string|max:255',
         ]);
     
-     //   dd($validatedData);
+       // dd($validatedData);
         $child = new Child();
         $child->customer_id = $validatedData['parent_id'];
         $child->name = $validatedData['name'];
@@ -68,29 +68,27 @@ class ChildController extends Controller
 
     public function update(Request $request, $id)
     {
+        //dd($request);
+        $validatedData = $request->validate([
+            'parent_id' => 'required|integer',
+            'name' => 'required|string|max:255',
+            'dob' => 'required|date',
+            'gender' => 'required|string|in:male,female',
+            'school' => 'nullable|string|max:255',
+            'relationship' => 'nullable|string|max:255',
+        ]);
 
-    $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'dob' => 'required|date',
-        'school' => 'nullable|string|max:255',
-        'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-        'customer_id' => 'required|exists:customers,id',
-    ]);
-
-    $child = Child::findOrFail($id);
-    $child->name = $validatedData['name'];
-    $child->dob = $validatedData['dob'];
-    $child->school = $validatedData['school'];
-    $child->customer_id = $validatedData['customer_id'];
-
-    if ($request->hasFile('profile_image')) {
-        $image = $request->file('profile_image');
-        $destinationPath = 'image/';
-        $profileImage = date('YmHis') . "." . $image->getClientOriginalExtension();
-        $image->move($destinationPath, $profileImage);
-        $child->profile_image = $profileImage;
-    }
+    dd($validatedData);
     
+    $child = Child::findOrFail($id);
+    $child->customer_id = $validatedData['parent_id'];
+        $child->name = $validatedData['name'];
+        $child->DOB = $validatedData['dob'];
+        $child->gender = $validatedData['gender'];
+        $child->relationship = $validatedData['relationship'];
+        $child->school = $validatedData['school'];
+    
+        dd($child);
     $child->save();
 
     return redirect()->back()->with('success', 'Child updated successfully.');

@@ -81,6 +81,7 @@ Route::post('playTimeOrder', [InvoiceController::class, 'playTimeOrder'])->name(
 Route::post('invoiceGenerator', [InvoiceController::class, 'invoiceGenerator'])->name('invoiceGenerator');
 Route::get('invoice.show', [InvoiceController::class, 'invoiceShow'])->name('invoice.show');
 Route::get('invoice.bill', [InvoiceController::class, 'invoiceBill'])->name('invoice.bill');
+Route::get('invoice/preview', [InvoiceController::class, 'invoicePreview'])->name('invoice.preview');
 
 
 Route::post('/search/customers', [CustomerController::class, 'search'])->name('search.customers');
