@@ -24,16 +24,23 @@
                     <div class="sidebar">
                     <header>My App</header>
                   <ul>
-                <li><a href="#"><i class="fas fa-qrcode"></i>Dashboard</a></li>
-                <li><a href="{{route('product_category.index')}}"><i class="fas fa-link"></i>Category</a></li>
+                {{-- <li><a href="#"><i class="fas fa-qrcode"></i>Dashboard</a></li> --}}
+                <li><a href="{{ route('customer.index') }}"><i class="fas fa-calendar-week"></i>Customers</a></li>
+                <li><a href="{{ route('child.index') }}"><i class="fas fa-calendar-week"></i>Child</a></li>
+                <li><a href="{{ route('invoice.create') }}"><i class="fas fa-sliders-h"></i>Invoice</a></li>
+                <li><a href="#"><i class="fas fa-calendar-week"></i>Check Stock</a></li>
                 @if($usertype === 'admin')
-                     <li><a href="{{ route('product.index') }}"><i class="fas fa-stream"></i>Products</a></li>
-               @endif
+                <li><a href="{{route('product_category.index')}}"><i class="fas fa-link"></i>Category</a></li>
+              
+                 <li><a href="{{ route('product.index') }}"><i class="fas fa-stream"></i>Products</a></li>
+              
                  {{-- <li><a href="{{ route('product.index') }}"><i class="fas fa-stream"></i>Products</a></li> --}}
                 <li><a href="{{ route('supplier.index') }}"><i class="fas fa-calendar-week"></i>Suppliers</a></li>
                 <li><a href="{{ route('playtimeprices.index') }}"><i class="far fa-question-circle"></i>PlayTime Price</a></li>
-                <li><a href="#"><i class="fas fa-sliders-h"></i>Invoices</a></li>
-                <li><a href="#"><i class="far fa-envelope"></i>Contact</a></li>
+
+                @endif
+                
+                
                 </ul>
                 </div>
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -67,6 +74,7 @@
                           </div>
                         </div>
                       </div>
+                     
                       <div class="col-md-6 col-lg-3 mb-4">
                         <div class="card">
                           <div class="card-body">
@@ -79,7 +87,7 @@
                     </div>
                   </div>
                 
-
+                  @if($usertype === 'admin')
                 <div class="container mt-4">
                   <!-- Your existing cardset -->
                   <div class="row">
@@ -91,6 +99,7 @@
                     </div>
                 </div>
                 </div>
+                @endif
               </div>
             </section>
           </body>

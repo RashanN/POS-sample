@@ -8,15 +8,15 @@
     <link rel="icon" type="image/x-icon" href="link.png">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}"> --}}
 
-    <link rel="stylesheet" href="{{asset('css/owl.theme.default.min.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('css/owl.theme.default.min.css')}}"> --}}
 
-    <link href='{{asset('https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css')}}' rel='stylesheet'>
+    {{-- <link href='{{asset('https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css')}}' rel='stylesheet'> --}}
 
-    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('css/style.css')}}"> --}}
 
-    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}"> --}}
     @yield('style')
 
 
@@ -48,7 +48,7 @@
         <div class="container">
 
 
-            <a class="navbar-brand" href="#">Conscience POS System</a>
+            <a class="navbar-brand" href="{{route('admin.dashboard')}}">House Of Play </a>
 
 
             <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -129,7 +129,7 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-6 text-center">
-                        <h4 class="navbar-brand">Developed By Conscience POS System<span class="dot">.</span></h4>
+                        <h4 class="navbar-brand">Developed By Brand Corridor<span class="dot"></span></h4>
                         <div class="col-auto social-icons">
                             <a href="#"><i class='bx bxl-facebook'></i></a>
                             <a href="#"><i class='bx bxl-twitter'></i></a>
